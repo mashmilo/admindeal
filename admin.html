@@ -1,161 +1,214 @@
 <!doctype html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>অ্যাডমিন প্যানেল</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Admin Panel – Admin Deal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f0f2f5;--card:#fff;--text:#1c1e21;--muted:#65676b;--line:#e4e6eb;--buyer:#2563eb;--seller:#16a34a;--admin:#d97706;--bot:#64748b;--primary:#2563eb}
+:root{--indigo:#4f46e5;--violet:#7c3aed;--sky:#0ea5e9;--buyer:#2563eb;--seller:#10b981;--admin:#8b5cf6;--bot:#64748b;--bad:#ef4444;--ok:#10b981;--warn:#f59e0b;--bg:#f4f6fb;--line:#e2e8f0;--muted:#64748b;--font:'Inter','Noto Sans Bengali',system-ui,sans-serif}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Noto Sans Bengali',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
-.top{background:#1f2937;color:#fff;padding:12px 16px;position:sticky;top:0;z-index:5;font-weight:700}
-.wrap{max-width:720px;margin:0 auto;padding:14px}
-.card{background:var(--card);border-radius:14px;padding:16px;border:1px solid var(--line);margin-bottom:14px}
-.card.unread{border-left:4px solid var(--admin)}
-h2{margin:0 0 6px;font-size:18px}
-p{margin:6px 0;color:var(--muted)}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
-.btn{border:0;border-radius:10px;padding:9px 14px;font:600 14px 'Noto Sans Bengali',sans-serif;cursor:pointer;color:#fff;background:var(--primary);margin:3px 3px 3px 0}
-.btn.admin{background:var(--admin)}.btn.seller{background:var(--seller)}.btn.buyer{background:var(--buyer)}
-.btn.ghost{background:#e4e6eb;color:var(--text)}
-.btn.tab-on{background:#1f2937}
-input,textarea{width:100%;padding:10px 12px;border:1px solid #ccd0d5;border-radius:10px;font:14px 'Noto Sans Bengali',sans-serif;background:#fff;margin:4px 0 10px}
-textarea{min-height:60px;resize:vertical}
-label{font-size:13px;font-weight:600;color:var(--muted)}
-#chat{height:50vh;overflow-y:auto;padding:12px;background:#e9edf3;border-radius:12px}
+body{margin:0;font-family:var(--font);background:var(--bg);color:#0f172a;font-size:14.5px;line-height:1.5}
+.appbar{position:sticky;top:0;z-index:10;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:linear-gradient(90deg,#1e1b4b,#312e81);color:#fff}
+.appbar b{font-size:17px;letter-spacing:-.2px}
+.appbar .who{font-size:12px;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:99px}
+.wrap{max-width:980px;margin:0 auto;padding:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 6px 20px rgba(15,23,42,.05);margin-bottom:14px}
+h2{margin:0 0 8px;font-size:18px}
+h3{margin:14px 0 6px;font-size:14px}
+.muted{color:var(--muted);font-size:12.5px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tab{border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:12px;font:600 13.5px var(--font);cursor:pointer;color:#334155}
+.tab.on{background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;border-color:transparent}
+.tab .n{display:inline-block;min-width:18px;padding:0 6px;border-radius:99px;background:var(--bad);color:#fff;font-size:11px;margin-left:4px}
+.btn{border:0;border-radius:10px;padding:9px 14px;font:600 13.5px var(--font);cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--violet));margin:3px 4px 3px 0}
+.btn.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer))}
+.btn.seller{background:linear-gradient(135deg,#34d399,var(--seller))}
+.btn.bad{background:linear-gradient(135deg,#f87171,var(--bad))}
+.btn.ghost{background:#eef2f7;color:#0f172a}
+.btn.block{width:100%}
+input,textarea{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;font:14px var(--font);background:#fff;margin:4px 0 10px}
+textarea{min-height:64px;resize:vertical}
+label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.deal-item{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:12px;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer;background:#fff}
+.deal-item:hover{border-color:#a5b4fc}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:#eef2ff;color:var(--indigo)}
+.chip.warn{background:#fef3c7;color:#b45309}.chip.ok{background:#d1fae5;color:#047857}.chip.bad{background:#fee2e2;color:#b91c1c}
+.chat{height:52vh;min-height:260px;overflow-y:auto;padding:12px;background:#eef2fb;border-radius:14px;border:1px solid var(--line)}
 .msg{display:flex;gap:8px;margin:8px 0;align-items:flex-end}
 .msg.me{flex-direction:row-reverse}
-.av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:#fff;flex:none}
-.av.buyer{background:var(--buyer)}.av.seller{background:var(--seller)}.av.admin{background:var(--admin)}.av.bot{background:var(--bot)}
-.bub{max-width:72%}
+.av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:14px;color:#fff;flex:none}
+.av.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer))}.av.seller{background:linear-gradient(135deg,#34d399,var(--seller))}
+.av.admin{background:linear-gradient(135deg,#a78bfa,var(--admin))}.av.bot{background:linear-gradient(135deg,#94a3b8,var(--bot))}
+.bub{max-width:76%}
 .lbl{font-size:11px;color:var(--muted);margin:0 6px 2px;font-weight:600}
 .msg.me .lbl{text-align:right}
-.txt{padding:8px 12px;border-radius:14px;color:#fff;white-space:pre-wrap;word-break:break-word;font-size:14px}
-.msg.buyer .txt{background:var(--buyer)}.msg.seller .txt{background:var(--seller)}
-.msg.admin .txt{background:var(--admin)}.msg.bot .txt{background:var(--bot)}
-.sys{text-align:center;font-size:12px;color:var(--muted);margin:8px 0}
+.txt{padding:9px 12px;border-radius:16px;color:#fff;white-space:pre-wrap;word-break:break-word}
+.msg.buyer .txt{background:linear-gradient(135deg,#3b82f6,var(--buyer))}.msg.seller .txt{background:linear-gradient(135deg,#34d399,var(--seller))}
+.msg.admin .txt{background:linear-gradient(135deg,#a78bfa,var(--admin))}.msg.bot .txt{background:linear-gradient(135deg,#94a3b8,var(--bot))}
+.sysline{text-align:center;margin:10px 0;font-size:12px;color:#475569}
+.sysline span{background:#dbe3ef;padding:3px 10px;border-radius:99px}
 .composer{display:flex;gap:8px;margin-top:10px}
 .composer input{margin:0;border-radius:99px}
-.hide{display:none}
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c1e21;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;display:none;z-index:9}
-small{color:var(--muted)}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
+.stat-grid div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
+.stat-grid b{display:block;font-size:20px}
+.stat-grid span{font-size:12px;color:var(--muted)}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;display:none;z-index:99}
+.login{max-width:380px;margin:60px auto}
+.unread{border-left:4px solid var(--warn)}
+.hidden{display:none!important}
+@media (max-width:720px){.stat-grid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.chat{height:46vh}.bub{max-width:82%}}
 </style>
 </head>
 <body>
-<div class="top">🛡️ অ্যাডমিন প্যানেল</div>
+<div class="appbar"><b>🛡️ Admin Deal · Control Panel</b><span class="who" id="who"></span></div>
 <div class="wrap" id="app"></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const toast = t => { const el = $('#toast'); el.textContent = t; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 2200); };
-const timeStr = t => new Date(t).toLocaleString('bn-BD', { dateStyle: 'short', timeStyle: 'short' });
-let KEY = sessionStorage.getItem('ak') || '';
-let tab = 'notifs', openRoom = null, lastCount = -1, lastUn = -1;
+const toast = t => { const el = $('#toast'); el.textContent = t; el.style.display = 'block'; clearTimeout(toast.h); toast.h = setTimeout(() => el.style.display = 'none', 2300); };
+const dt = t => new Date(t).toLocaleString('en-US', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
 
-const LBL = { buyer: 'ক্রেতা', seller: 'বিক্রেতা', admin: 'অ্যাডমিন', bot: 'বট' };
+const LBL = { buyer: 'Buyer', seller: 'Seller', admin: 'Admin', bot: 'Bot' };
 const AV = { buyer: '🛒', seller: '🏪', admin: '🛡️', bot: '🤖' };
 const STEP = {
-  join: 'সদস্য অপেক্ষা', roles: 'ভূমিকা বাছাই', amount: 'পরিমাণ অপেক্ষা', pay: 'ক্রেতার পেমেন্ট অপেক্ষা',
-  verify: '⚠️ পেমেন্ট যাচাই করুন', deliver: 'ক্রেতার নিশ্চিতকরণ অপেক্ষা', release: '⚠️ বিক্রেতাকে টাকা পাঠান', done: '✅ সম্পন্ন'
+  join: 'Waiting for members', roles: 'Choosing roles', amount: 'Waiting for amount', pay: 'Waiting for payment',
+  verify: '⚠️ Verify payment', deliver: 'Waiting for delivery confirmation', release: '⚠️ Pay the seller', done: 'Completed'
 };
+const STATUS_CHIP = { active: 'warn', done: 'ok', cancelled: 'bad' };
 const TEXT_KEYS = [
-  ['welcome', 'ডিল তৈরির বার্তা'], ['roles', 'ভূমিকা বাছাইয়ের বার্তা'], ['amount', 'পরিমাণ চাওয়ার বার্তা'],
-  ['pay', 'পেমেন্ট নির্দেশ ({amount} {fee} {feeAmt} {total})'], ['payDetail', 'পেমেন্ট নম্বর বার্তা ({method} {number} {total})'],
-  ['sent', 'টাকা পাঠানো হলে বার্তা'], ['verified', 'পেমেন্ট পাওয়ার বার্তা'], ['notPaid', 'পেমেন্ট না পেলে বার্তা'],
-  ['received', 'পণ্য পাওয়ার বার্তা'], ['done', 'ডিল সম্পন্নের বার্তা']
+  ['welcome', 'Deal created'], ['roles', 'Roles prompt'], ['amount', 'Amount prompt'],
+  ['pay', 'Payment instructions  — placeholders: {amount} {fee} {feeAmt} {total}'],
+  ['payDetail', 'Payment number message — placeholders: {method} {number} {total}'],
+  ['sent', 'Buyer says sent'], ['verified', 'Payment received'], ['notPaid', 'Payment not received'],
+  ['received', 'Delivery confirmed'], ['done', 'Deal completed'], ['cancelled', 'Deal cancelled']
 ];
 
-async function api(p, opt = {}) {
+let KEY = sessionStorage.getItem('ak') || '';
+let tab = 'deals', openRoom = null, notifUnread = 0, lastNotif = -1;
+
+async function api(p, o = {}) {
   const r = await fetch('/api/' + p, {
-    method: opt.method || 'GET',
+    method: o.method || 'GET',
     headers: { 'content-type': 'application/json', 'x-admin-key': KEY },
-    body: opt.body ? JSON.stringify(opt.body) : undefined
+    body: o.body ? JSON.stringify(o.body) : undefined
   });
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error || 'সমস্যা হয়েছে');
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || 'Something went wrong');
   return d;
 }
 
 function loginView() {
-  $('#app').innerHTML = `<div class="card" style="margin-top:30px"><h2>লগইন</h2>
-    <input id="pw" type="password" placeholder="অ্যাডমিন পাসওয়ার্ড">
-    <button class="btn admin" id="lg">প্রবেশ করুন</button></div>`;
-  $('#lg').onclick = async () => {
+  $('#app').innerHTML = `<div class="card login"><h2>Admin sign in</h2>
+    <label>Admin password</label><input id="pw" type="password" autocomplete="current-password">
+    <button class="btn block" id="lg">Enter</button></div>`;
+  const go = async () => {
     KEY = $('#pw').value;
     try { await api('admin/login', { method: 'POST', body: {} }); sessionStorage.setItem('ak', KEY); shell(); }
-    catch { toast('ভুল পাসওয়ার্ড'); }
+    catch { toast('Wrong password'); }
   };
+  $('#lg').onclick = go;
+  $('#pw').onkeydown = e => { if (e.key === 'Enter') go(); };
 }
 
 function shell() {
+  $('#who').textContent = 'Signed in';
   $('#app').innerHTML = `<div class="tabs">
-      <button class="btn" data-t="notifs">🔔 নোটিফিকেশন <span id="badge"></span></button>
-      <button class="btn" data-t="rooms">📋 ডিলসমূহ</button>
-      <button class="btn" data-t="settings">⚙️ সেটিংস</button>
-      <button class="btn ghost" id="perm">ব্রাউজার নোটিফিকেশন চালু</button>
+      <button class="tab on" data-t="deals">📋 Deals</button>
+      <button class="tab" data-t="reports">⚠️ Reports <span class="n hidden" id="rn"></span></button>
+      <button class="tab" data-t="notifs">🔔 Notifications <span class="n hidden" id="nn"></span></button>
+      <button class="tab" data-t="settings">⚙️ Settings</button>
+      <button class="tab" data-t="logout">Log out</button>
     </div><div id="view"></div>`;
   show();
-  loadBadge();
-  setInterval(() => {
+  setInterval(async () => {
     if (openRoom) { if (!$('#ms') || !$('#ms').value) roomView(openRoom); }
-    else if (tab === 'notifs' || tab === 'rooms') show();
-    loadBadge();
+    else if (tab === 'deals' || tab === 'reports' || tab === 'notifs') show();
+    badges();
   }, 4000);
+  badges();
 }
 
-async function loadBadge() {
+async function badges() {
   try {
     const n = await api('admin/notifs');
     const un = n.filter(x => !x.read).length;
-    if ($('#badge')) $('#badge').textContent = un ? `(${un})` : '';
-    if (lastUn >= 0 && un > lastUn && Notification.permission === 'granted' && n[0])
-      new Notification('নতুন নোটিফিকেশন', { body: n[0].text });
-    lastUn = un;
+    const nn = $('#nn'), rn = $('#rn');
+    if (nn) { nn.textContent = un; nn.classList.toggle('hidden', !un); }
+    if (lastNotif >= 0 && un > notifUnread && Notification.permission === 'granted' && n[0]) new Notification('Admin Deal', { body: n[0].text });
+    notifUnread = un; lastNotif = n.length;
+    const reps = (await api('admin/reports')).filter(x => x.status === 'open');
+    if (rn) { rn.textContent = reps.length; rn.classList.toggle('hidden', !reps.length); }
   } catch {}
 }
 
 async function show() {
+  const v = $('#view');
   try {
-    if (tab === 'notifs') {
-      const n = await api('admin/notifs');
-      $('#view').innerHTML = `<div class="card"><button class="btn ghost" id="rd">সব পড়া হয়েছে</button></div>` +
-        (n.map(x => `<div class="card ${x.read ? '' : 'unread'}"><small>${timeStr(x.t)}</small>
-          <div>${esc(x.text)}</div></div>`).join('') || '<div class="card">কোনো নোটিফিকেশন নেই</div>');
-    }
-    else if (tab === 'rooms') {
+    document.querySelectorAll('.tab').forEach(b => b.classList.toggle('on', b.dataset.t === tab));
+    if (tab === 'deals') {
       if (openRoom) return roomView(openRoom);
       const rs = await api('admin/rooms');
-      $('#view').innerHTML = rs.map(r => `<div class="card">
-        <b>ডিল #${esc(r.id)}</b> — ${STEP[r.step]}<br>
-        <small>${r.members.map(x => x.role ? `${AV[x.role]} ${LBL[x.role]}` : '👤 সদস্য').join(' • ') || 'কেউ যুক্ত হননি'}${r.amount ? ' | ৳' + r.amount : ''}</small><br>
-        <button class="btn" data-open="${esc(r.id)}">খুলুন</button></div>`).join('') || '<div class="card">কোনো ডিল নেই</div>';
+      const stats = `<div class="stat-grid">
+        <div><b>${rs.length}</b><span>Deals</span></div>
+        <div><b>${rs.filter(r => r.status === 'active').length}</b><span>In progress</span></div>
+        <div><b>${rs.filter(r => r.status === 'done').length}</b><span>Completed</span></div>
+        <div><b>${rs.filter(r => r.step === 'verify' || r.step === 'release').length}</b><span>Need action</span></div></div>`;
+      v.innerHTML = stats + (rs.map(r => `<div class="deal-item" data-open="${esc(r.id)}">
+          <div><b>Deal #${esc(r.id)}</b> <span class="chip ${STATUS_CHIP[r.status]}">${r.status}</span>
+          <div class="muted">${STEP[r.step]} · ${r.amount ? '৳' + r.amount : 'no amount'} · ${dt(r.t)}</div></div>
+          <span class="chip">Open →</span></div>`).join('') || '<div class="card">No deals yet.</div>');
+    }
+    else if (tab === 'reports') {
+      const list = await api('admin/reports');
+      v.innerHTML = list.map(x => `<div class="card ${x.status === 'open' ? 'unread' : ''}">
+          <div class="row" style="justify-content:space-between"><b>Deal #${esc(x.roomId)}</b>
+          <span class="chip ${x.status === 'valid' ? 'bad' : x.status === 'dismissed' ? '' : 'warn'}">${x.status}</span></div>
+          <div class="muted">Reported user: ${esc(x.against)} · by ${esc(x.by)} · ${dt(x.t)}</div>
+          <p>${esc(x.reason)}</p>
+          ${x.status === 'open' ? `<button class="btn bad" data-rep="${esc(x.id)}" data-act="valid">Confirm scam</button>
+          <button class="btn ghost" data-rep="${esc(x.id)}" data-act="dismiss">Dismiss</button>` : ''}
+        </div>`).join('') || '<div class="card">No reports.</div>';
+    }
+    else if (tab === 'notifs') {
+      const n = await api('admin/notifs');
+      v.innerHTML = `<div class="card"><button class="btn ghost" id="rd">Mark all as read</button></div>` +
+        (n.map(x => `<div class="card ${x.read ? '' : 'unread'}"><div class="muted">${dt(x.t)}</div><div>${esc(x.text)}</div></div>`).join('')
+          || '<div class="card">No notifications.</div>');
     }
     else if (tab === 'settings') await settingsView();
-  } catch (e) {
-    $('#view').innerHTML = `<div class="card">${esc(e.message)}</div>`;
-  }
+  } catch (e) { v.innerHTML = `<div class="card">${esc(e.message)}</div>`; }
 }
 
 async function settingsView() {
   const s = await api('settings');
-  const methods = s.methods.map(x => `${x.name} | ${x.number}`).join('\n');
-  $('#view').innerHTML = `<div class="card">
-      <h2>সার্ভিস ফি ও পেমেন্ট</h2>
-      <label>সার্ভিস ফি (%)</label><input id="fee" type="number" step="0.1" min="0" value="${s.feePercent}">
-      <label>পেমেন্ট মাধ্যম (প্রতি লাইনে: নাম | নম্বর)</label>
-      <textarea id="methods" style="min-height:90px">${esc(methods)}</textarea>
+  $('#view').innerHTML = `
+    <div class="card">
+      <h2>Fee and payment methods</h2>
+      <div class="grid2">
+        <div><label>Service fee (%)</label><input id="fee" type="number" step="0.1" min="0" value="${s.feePercent}"></div>
+        <div><label>Google Client ID (optional)</label><input id="gid" value="${esc(s.googleClientId)}" placeholder="xxxx.apps.googleusercontent.com"></div>
+      </div>
+      <div class="grid2">
+        <div><label>Facebook App ID (optional)</label><input id="fbid" value="${esc(s.fbAppId)}" placeholder="1234567890"></div>
+        <div></div>
+      </div>
+      <label>Payment methods (one per line: name | number)</label>
+      <textarea id="methods" style="min-height:96px">${esc(s.methods.map(x => `${x.name} | ${x.number}`).join('\n'))}</textarea>
     </div>
     <div class="card">
-      <h2>বটের বার্তা</h2>
-      <p>প্রতিটি ধাপে বট কী লিখবে তা এখানে বদলান।</p>
+      <h2>Bot messages (Bangla)</h2>
+      <p class="muted">The bot speaks Bangla. These texts appear in the chat at each step.</p>
       ${TEXT_KEYS.map(([k, l]) => `<label>${esc(l)}</label><textarea data-tk="${k}">${esc(s.texts[k])}</textarea>`).join('')}
     </div>
-    <button class="btn admin" id="sv">সব সেভ করুন</button>`;
+    <button class="btn block" id="sv">Save all settings</button>`;
 }
 
 async function roomView(id) {
@@ -163,36 +216,50 @@ async function roomView(id) {
     const rs = await api('admin/rooms');
     const r = rs.find(x => x.id === id);
     if (!r) { openRoom = null; return show(); }
-    let act = '';
-    if (r.step === 'verify') act = `<button class="btn buyer" data-ra="confirm">✅ পেমেন্ট পেয়েছি</button><button class="btn ghost" data-ra="reject">❌ এখনো পাইনি</button>`;
-    if (r.step === 'release') act = `<button class="btn seller" data-ra="released">✅ বিক্রেতাকে টাকা পাঠিয়েছি</button>`;
-    const info = r.amount ? `<p>পরিমাণ ৳${r.amount} | ফি ৳${r.fee} | ক্রেতা দেবেন ৳${r.total}</p>` : '';
+    const keep = $('#ms') ? $('#ms').value : '';
+    const ended = r.status !== 'active';
+    let acts = '';
+    if (!ended) {
+      if (r.step === 'verify') acts += `<button class="btn buyer" data-ra="confirm">✅ Payment received</button><button class="btn ghost" data-ra="reject">❌ Not received</button>`;
+      if (r.step === 'release') acts += `<button class="btn seller" data-ra="released">✅ Seller paid</button>`;
+      acts += `<button class="btn bad" data-ra="cancel">Cancel deal</button>`;
+    }
     const body = r.messages.map(m => {
-      if (m.who === 'sys') return `<div class="sys">${esc(m.text)}</div>`;
+      if (m.who === 'sys') return `<div class="sysline"><span>${esc(m.text)}</span></div>`;
       return `<div class="msg ${m.who} ${m.who === 'admin' ? 'me' : ''}">
         <div class="av ${m.who}">${AV[m.who] || '•'}</div>
         <div class="bub"><div class="lbl">${LBL[m.who]}</div><div class="txt">${esc(m.text)}</div></div></div>`;
     }).join('');
-    const keep = $('#ms') ? $('#ms').value : '';
+    const info = r.amount ? `<div class="muted">Amount ৳${r.amount} · Fee ৳${r.fee} · Buyer pays ৳${r.total}${r.method ? ' · ' + esc(r.method.name) + ' ' + esc(r.method.number) : ''}</div>` : '';
     $('#view').innerHTML = `<div class="card">
-      <button class="btn ghost" data-back="1">← ফিরে যান</button>
-      <h2 style="margin-top:8px">ডিল #${esc(r.id)} — ${STEP[r.step]}</h2>
+      <div class="row" style="justify-content:space-between"><button class="btn ghost" data-back="1">← Back</button>
+      <span class="chip ${STATUS_CHIP[r.status]}">${r.status}</span></div>
+      <h2 style="margin-top:10px">Deal #${esc(r.id)} · ${STEP[r.step]}</h2>
       ${info}
-      <div id="chat">${body}</div>
-      <div style="margin-top:10px">${act}</div>
-      <div class="composer"><input id="ms" placeholder="অ্যাডমিন হিসেবে বার্তা লিখুন"><button class="btn admin" data-ra="msg">পাঠান</button></div>
+      <div class="chat" id="chat">${body}</div>
+      <div class="row" style="margin-top:10px">${acts}</div>
+      ${ended ? '' : `<div class="composer"><input id="ms" placeholder="Message as Admin…"><button class="btn" data-ra="msg">Send</button></div>`}
     </div>`;
-    $('#ms').value = keep;
+    if ($('#ms')) $('#ms').value = keep;
     $('#chat').scrollTop = $('#chat').scrollHeight;
   } catch (e) { $('#view').innerHTML = `<div class="card">${esc(e.message)}</div>`; }
 }
 
 document.addEventListener('click', async e => {
-  const b = e.target.closest('button');
+  const b = e.target.closest('button, [data-open]');
   if (!b) return;
   try {
-    if (b.id === 'perm') { Notification.requestPermission(); return; }
+    if (b.dataset.open) { openRoom = b.dataset.open; tab = 'deals'; return roomView(openRoom); }
+    if (b.dataset.back) { openRoom = null; return show(); }
+    if (b.dataset.t) {
+      if (b.dataset.t === 'logout') { sessionStorage.removeItem('ak'); KEY = ''; return loginView(); }
+      tab = b.dataset.t; openRoom = null; return show();
+    }
     if (b.id === 'rd') { await api('admin/notifs/read', { method: 'POST', body: {} }); return show(); }
+    if (b.dataset.rep) {
+      await api('admin/reports/' + b.dataset.rep + '/action', { method: 'POST', body: { action: b.dataset.act } });
+      toast('Updated'); return show();
+    }
     if (b.id === 'sv') {
       const methods = $('#methods').value.split('\n').map(l => {
         const [name, number] = l.split('|').map(x => (x || '').trim());
@@ -200,17 +267,18 @@ document.addEventListener('click', async e => {
       });
       const texts = {};
       document.querySelectorAll('[data-tk]').forEach(t => texts[t.dataset.tk] = t.value);
-      await api('admin/settings', { method: 'POST', body: { feePercent: Number($('#fee').value), methods, texts } });
-      return toast('সেভ হয়েছে');
+      await api('admin/settings', { method: 'POST', body: {
+        feePercent: Number($('#fee').value), googleClientId: $('#gid').value,
+        fbAppId: $('#fbid').value, methods, texts
+      } });
+      return toast('Settings saved');
     }
-    if (b.dataset.open) { openRoom = b.dataset.open; tab = 'rooms'; return show(); }
-    if (b.dataset.back) { openRoom = null; return show(); }
-    if (b.dataset.t) { tab = b.dataset.t; openRoom = null; return show(); }
     if (b.dataset.ra) {
       const text = $('#ms') ? $('#ms').value.trim() : '';
-      if (b.dataset.ra === 'msg' && !text) return toast('বার্তা লিখুন');
+      if (b.dataset.ra === 'msg' && !text) return toast('Write a message');
+      if (b.dataset.ra === 'cancel' && !confirm('Cancel this deal?')) return;
       await api('admin/room/' + openRoom + '/action', { method: 'POST', body: { action: b.dataset.ra, text } });
-      if (b.dataset.ra === 'msg' && $('#ms')) $('#ms').value = '';
+      if ($('#ms')) $('#ms').value = '';
       return roomView(openRoom);
     }
   } catch (err) { toast(err.message); }
