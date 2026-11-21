@@ -1,240 +1,561 @@
 <!doctype html>
-<html lang="bn">
+<html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>নিরাপদ এসক্রো</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#4f46e5">
+<title>Admin Deal – Secure Escrow</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔒</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f0f2f5;--card:#fff;--text:#1c1e21;--muted:#65676b;--line:#e4e6eb;--buyer:#2563eb;--seller:#16a34a;--admin:#d97706;--bot:#64748b;--primary:#2563eb}
+:root{
+  --indigo:#4f46e5; --violet:#7c3aed; --sky:#0ea5e9;
+  --buyer:#2563eb; --seller:#10b981; --admin:#8b5cf6; --bot:#64748b;
+  --ok:#10b981; --bad:#ef4444; --warn:#f59e0b;
+  --bg:#f4f6fb; --card:#ffffff; --text:#0f172a; --muted:#64748b; --line:#e2e8f0;
+  --font:'Inter','Noto Sans Bengali',system-ui,-apple-system,sans-serif;
+}
 *{box-sizing:border-box}
-body{margin:0;font-family:'Noto Sans Bengali',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
-.top{background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:700;font-size:17px;color:var(--primary)}
-.wrap{max-width:640px;margin:0 auto;padding:14px}
-.card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--line);margin-bottom:14px}
-h2{margin:0 0 6px;font-size:19px}
+html,body{margin:0;height:100%}
+body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+/* App bar */
+.appbar{position:sticky;top:0;z-index:20;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;text-decoration:none;letter-spacing:-.2px}
+.logo .mark{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,var(--indigo),var(--sky));display:grid;place-items:center;color:#fff;font-size:16px}
+.logo span{background:linear-gradient(90deg,var(--indigo),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+.avatar-btn{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px var(--indigo);overflow:hidden;background:#e0e7ff;cursor:pointer;padding:0;display:grid;place-items:center;font-size:18px}
+.avatar-btn img{width:100%;height:100%;object-fit:cover}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:12px 18px;font:600 15px var(--font);cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--violet));box-shadow:0 4px 14px rgba(79,70,229,.25);transition:transform .08s,opacity .2s;text-decoration:none;white-space:nowrap}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.5;cursor:default;box-shadow:none}
+.btn.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer));box-shadow:0 4px 14px rgba(37,99,235,.25)}
+.btn.seller{background:linear-gradient(135deg,#34d399,var(--seller));box-shadow:0 4px 14px rgba(16,185,129,.25)}
+.btn.admin{background:linear-gradient(135deg,#a78bfa,var(--admin));box-shadow:0 4px 14px rgba(139,92,246,.25)}
+.btn.ghost{background:#eef2f7;color:var(--text);box-shadow:none}
+.btn.fb{background:#1877f2;box-shadow:none}
+.btn.sm{padding:8px 12px;font-size:13px;border-radius:10px}
+.btn.lg{padding:15px 22px;font-size:16px;border-radius:14px}
+.btn.block{width:100%}
+/* Cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.05)}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+h2{margin:0 0 6px;font-size:20px;letter-spacing:-.3px}
+h3{margin:0 0 4px;font-size:16px}
 p{margin:6px 0;color:var(--muted)}
-.btn{border:0;border-radius:10px;padding:11px 16px;font:600 14px 'Noto Sans Bengali',sans-serif;cursor:pointer;color:#fff;background:var(--primary);margin:4px 4px 4px 0}
-.btn.buyer{background:var(--buyer)}.btn.seller{background:var(--seller)}
-.btn.ghost{background:#e4e6eb;color:var(--text)}
-.btn:disabled{opacity:.5;cursor:default}
-.btn.block{width:100%;margin:6px 0 0}
-.chip{display:inline-block;padding:3px 10px;border-radius:99px;background:#eef2ff;color:var(--primary);font-size:12px;font-weight:600}
-.meta{font-size:13px;color:var(--muted);margin-top:6px;word-break:break-all}
-#chat{height:calc(100vh - 330px);min-height:280px;overflow-y:auto;padding:14px;background:#e9edf3;border:1px solid var(--line);border-bottom:0;border-radius:14px 14px 0 0}
+.muted{color:var(--muted);font-size:13px}
+.label{font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);margin:8px 0}
+.row{display:flex;gap:8px;align-items:center}
+.row.wrap{flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grow{flex:1;min-width:0}
+input,textarea{width:100%;padding:13px 14px;border:1px solid #cbd5e1;border-radius:12px;font:15px var(--font);background:#fff;outline:none}
+input:focus,textarea:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(79,70,229,.15)}
+textarea{min-height:90px;resize:vertical}
+/* Home */
+.hero{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 45%,#0ea5e9 100%);color:#fff;border-radius:24px;padding:28px 22px;margin-top:6px;position:relative;overflow:hidden;box-shadow:0 18px 40px rgba(79,70,229,.3)}
+.hero:after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.12)}
+.tag{display:inline-block;background:rgba(255,255,255,.18);padding:5px 12px;border-radius:99px;font-size:12px;font-weight:600;margin-bottom:12px}
+.hero h1{margin:0 0 10px;font-size:30px;line-height:1.15;letter-spacing:-.6px}
+.hero p{color:rgba(255,255,255,.88);margin:0 0 18px;max-width:460px}
+.hero .btn{background:#fff;color:var(--indigo);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
+.step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
+.step b{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--sky));font-size:13px;margin-bottom:8px}
+.step h3{font-size:14px}.step p{font-size:12.5px;margin:0}
+.checks{list-style:none;padding:0;margin:8px 0 0}
+.checks li{padding:8px 0 8px 28px;position:relative;color:var(--muted);border-top:1px solid var(--line)}
+.checks li:before{content:"✓";position:absolute;left:4px;top:8px;width:18px;height:18px;border-radius:50%;background:#d1fae5;color:#047857;font-size:12px;display:grid;place-items:center;font-weight:700}
+@media (max-width:560px){.steps{grid-template-columns:1fr}.hero h1{font-size:26px}}
+/* Deal room */
+.deal{max-width:720px;margin:0 auto;background:var(--card);height:calc(100vh - 56px);height:calc(100dvh - 56px);display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px var(--line)}
+.deal-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);background:#fff}
+.icon-btn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#eef2f7;text-decoration:none;color:var(--text);font-size:18px;flex:none}
+.dtitle{font-weight:700;font-size:16px}
+.dsub{font-size:12.5px;color:var(--muted)}
+.pill{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:#eef2ff;color:var(--indigo);white-space:nowrap}
+.pill.ok{background:#d1fae5;color:#047857}.pill.bad{background:#fee2e2;color:#b91c1c}
+.people{display:flex;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);align-items:center;overflow-x:auto}
+.person{display:flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border-radius:14px;background:#f8fafc;border:1px solid var(--line);cursor:pointer;flex:1;min-width:150px}
+.person .pname{font-weight:700;font-size:13px}
+.person .psub{font-size:11.5px;color:var(--muted)}
+.av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:16px;color:#fff;flex:none}
+.av.lg{width:40px;height:40px;font-size:18px}
+.av.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer))}
+.av.seller{background:linear-gradient(135deg,#34d399,var(--seller))}
+.av.admin{background:linear-gradient(135deg,#a78bfa,var(--admin))}
+.av.bot{background:linear-gradient(135deg,#94a3b8,var(--bot))}
+.av.sys{display:none}
+.banner{margin:10px 12px 0;padding:12px 14px;border-radius:14px;background:#eef2ff;border:1px solid #c7d2fe;display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.banner.join{background:linear-gradient(135deg,#eef2ff,#e0f2fe)}
+.banner b{font-size:14.5px}
+.chat{flex:1;min-height:0;overflow-y:auto;padding:14px 12px;background:#eef2fb;background-image:radial-gradient(#c7d2fe55 1px,transparent 1px);background-size:18px 18px}
 .msg{display:flex;gap:8px;margin:10px 0;align-items:flex-end}
 .msg.me{flex-direction:row-reverse}
-.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;flex:none}
-.av.buyer{background:var(--buyer)}.av.seller{background:var(--seller)}.av.admin{background:var(--admin)}.av.bot{background:var(--bot)}
-.bub{max-width:72%}
-.lbl{font-size:12px;color:var(--muted);margin:0 6px 2px;font-weight:600}
+.bub{max-width:76%;min-width:0}
+.lbl{font-size:11.5px;color:var(--muted);margin:0 8px 3px;font-weight:600}
 .msg.me .lbl{text-align:right}
-.txt{padding:9px 13px;border-radius:16px;color:#fff;white-space:pre-wrap;word-break:break-word}
-.msg.buyer .txt{background:var(--buyer)}
-.msg.seller .txt{background:var(--seller)}
-.msg.admin .txt{background:var(--admin)}
-.msg.bot .txt{background:var(--bot)}
-.msg.me .txt{border-bottom-right-radius:4px}
-.msg:not(.me) .txt{border-bottom-left-radius:4px}
-.tm{font-size:11px;color:var(--muted);margin:2px 6px 0}
+.txt{padding:10px 14px;border-radius:18px;color:#fff;white-space:pre-wrap;word-break:break-word;box-shadow:0 2px 6px rgba(15,23,42,.08)}
+.msg.buyer .txt{background:linear-gradient(135deg,#3b82f6,var(--buyer))}
+.msg.seller .txt{background:linear-gradient(135deg,#34d399,var(--seller))}
+.msg.admin .txt{background:linear-gradient(135deg,#a78bfa,var(--admin))}
+.msg.bot .txt{background:linear-gradient(135deg,#94a3b8,var(--bot));font-size:14.5px}
+.msg.me .txt{border-bottom-right-radius:5px}
+.msg:not(.me) .txt{border-bottom-left-radius:5px}
+.tm{font-size:10.5px;color:var(--muted);margin:3px 8px 0}
 .msg.me .tm{text-align:right}
-.sys{text-align:center;font-size:12px;color:var(--muted);margin:10px 0;background:#d8dee8;display:inline-block;padding:3px 10px;border-radius:99px;width:auto}
-.center{text-align:center}
-.composer{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:0 0 14px 14px;padding:10px;margin-bottom:14px}
-.composer input{border-radius:99px;flex:1}
-input{padding:11px 14px;border:1px solid #ccd0d5;border-radius:10px;font:15px 'Noto Sans Bengali',sans-serif;width:100%;background:#fff}
-.hide{display:none}
-.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c1e21;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;display:none;z-index:9}
+.sysline{text-align:center;margin:12px 0}
+.sysline span{display:inline-block;font-size:12px;color:#475569;background:#dbe3ef;padding:4px 12px;border-radius:99px}
+.actions{padding:12px;border-top:1px solid var(--line);background:#fff}
+.actions:empty{display:none}
+.actions input{flex:1}
+.note{font-size:14px;color:var(--muted);text-align:center;padding:4px 0}
+.composer{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff}
+.composer[hidden]{display:none}
+.composer input{border-radius:99px;padding:11px 16px}
+/* Sheet */
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+.overlay.open{display:flex}
+.sheet{background:#fff;width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;animation:up .22s ease-out}
+@keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
+@media (min-width:640px){.overlay{align-items:center}.sheet{border-radius:22px;max-height:85vh}}
+.sheet .grab{width:44px;height:5px;border-radius:9px;background:#cbd5e1;margin:-8px auto 14px}
+.ph{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.pav{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--sky));display:grid;place-items:center;color:#fff;font-size:26px;overflow:hidden;flex:none}
+.pav img{width:100%;height:100%;object-fit:cover}
+.pn{font-weight:800;font-size:18px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 16px}
+.stats div{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.stats b{display:block;font-size:17px}
+.stats span{font-size:11px;color:var(--muted)}
+.stats .bad b{color:var(--bad)}
+.drow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:#eef2ff;color:var(--indigo)}
+.badge.done{background:#d1fae5;color:#047857}.badge.cancelled{background:#fee2e2;color:#b91c1c}
+.toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;display:none;z-index:99;max-width:90vw;box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.hidden{display:none!important}
+@media (max-width:420px){.stats{grid-template-columns:repeat(2,1fr)}.person{min-width:0}}
 </style>
 </head>
 <body>
-<div class="top">
-  <div class="brand">🔒 নিরাপদ এসক্রো</div>
-  <a href="/admin.html" style="font-size:13px;color:var(--muted);text-decoration:none">অ্যাডমিন</a>
-</div>
-<div class="wrap" id="app"></div>
+<header class="appbar">
+  <a class="logo" href="/"><div class="mark">🔒</div><span>Admin Deal</span></a>
+  <div id="authBox"></div>
+</header>
+
+<main id="app"></main>
+
+<div class="overlay" id="sheet"><div class="sheet" id="sheetBody"></div></div>
 <div class="toast" id="toast"></div>
 
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const toast = t => { const el = $('#toast'); el.textContent = t; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 2200); };
-const timeStr = t => new Date(t).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+const toast = t => { const el = $('#toast'); el.textContent = t; el.style.display = 'block'; clearTimeout(toast.h); toast.h = setTimeout(() => el.style.display = 'none', 2300); };
+const dateStr = t => new Date(t).toLocaleDateString('en-US', { day: 'numeric', month: 'short', year: 'numeric' });
+const timeStr = t => new Date(t).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
 
-async function api(p, opt = {}) {
+const LBL = { buyer: 'Buyer', seller: 'Seller', admin: 'Admin', bot: 'Bot' };
+const AV = { buyer: '🛒', seller: '🏪', admin: '🛡️', bot: '🤖' };
+const STEP = {
+  join: 'Waiting to join', roles: 'Choose roles', amount: 'Set amount', pay: 'Payment',
+  verify: 'Verifying payment', deliver: 'Confirm delivery', release: 'Releasing to seller', done: 'Completed'
+};
+const STATUS = { active: 'In progress', done: 'Completed', cancelled: 'Cancelled' };
+const MANUAL = ['verify', 'deliver', 'release', 'done'];
+
+const roomId = new URLSearchParams(location.search).get('room');
+let session = localStorage.getItem('ad_session') || '';
+let ME = null, SET = { methods: [], googleClientId: '', fbAppId: '' };
+let S = null, memberId = roomId ? (localStorage.getItem('mem_' + roomId) || '') : '';
+let lastMsgCount = -1, lastStep = null, lastPanel = '', lastBanner = '', lastPeople = '';
+
+async function api(p, o = {}) {
+  const h = { 'content-type': 'application/json' };
+  if (session) h.authorization = 'Bearer ' + session;
+  if (o.member) h['x-member'] = o.member;
+  if (o.admin) h['x-admin-key'] = o.admin;
   const r = await fetch('/api/' + p, {
-    method: opt.method || 'GET',
-    headers: { 'content-type': 'application/json' },
-    body: opt.body ? JSON.stringify(opt.body) : undefined
+    method: o.method || 'GET', headers: h,
+    body: o.body ? JSON.stringify(o.body) : undefined
   });
-  const d = await r.json();
-  if (!r.ok) throw new Error(d.error || 'সমস্যা হয়েছে');
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.error || 'Something went wrong');
   return d;
 }
 
-const LBL = { buyer: 'ক্রেতা', seller: 'বিক্রেতা', admin: 'অ্যাডমিন', bot: 'বট' };
-const AV = { buyer: '🛒', seller: '🏪', admin: '🛡️', bot: '🤖' };
-const STEP = {
-  join: 'যোগদান', roles: 'ভূমিকা বাছাই', amount: 'পরিমাণ', pay: 'পেমেন্ট',
-  verify: 'যাচাই চলছে', deliver: 'নিশ্চিতকরণ', release: 'বিক্রেতাকে পেমেন্ট', done: 'সম্পন্ন ✅'
-};
-const MANUAL = ['verify', 'deliver', 'release', 'done'];
-const roomId = new URLSearchParams(location.search).get('room');
-let S = null, mem = null, panelHTML = '', lastCount = -1;
+/* ---------- Header ---------- */
+function renderAuth() {
+  const box = $('#authBox');
+  if (ME) {
+    box.innerHTML = `<button class="avatar-btn" id="myProfile" title="My profile">${ME.picture ? `<img src="${esc(ME.picture)}" alt="">` : '👤'}</button>`;
+  } else if (SET.googleClientId || SET.fbAppId) {
+    box.innerHTML = `<button class="btn ghost sm" id="loginBtn">Sign in</button>`;
+  } else box.innerHTML = '';
+}
 
+/* ---------- Home ---------- */
 function home() {
-  $('#app').innerHTML = `<div class="card" style="margin-top:24px">
-    <h2>নতুন ডিল শুরু করুন</h2>
-    <p>একটি ডিল রুম তৈরি হবে। লিংকটি ক্রেতা ও বিক্রেতাকে পাঠান। কোনো লগইন লাগবে না।</p>
-    <button class="btn" id="new">নতুন ডিল তৈরি করুন</button></div>`;
-  $('#new').onclick = async () => {
-    try { const d = await api('room', { method: 'POST' }); location.href = '/?room=' + d.id; }
-    catch (e) { toast(e.message); }
-  };
+  $('#app').innerHTML = `<div class="wrap">
+    <section class="hero">
+      <span class="tag">🔒 Secure escrow for buyers & sellers</span>
+      <h1>Trade with confidence</h1>
+      <p>Create a deal room, invite the other party, and let our escrow bot guide every step from payment to delivery.</p>
+      <button class="btn lg" id="newDeal">+ Start a new deal</button>
+    </section>
+    <section class="steps">
+      <div class="step"><b>1</b><h3>Create a deal</h3><p>Get a private deal link in one tap.</p></div>
+      <div class="step"><b>2</b><h3>Invite & choose roles</h3><p>Buyer and seller join from the same link.</p></div>
+      <div class="step"><b>3</b><h3>Pay & release</h3><p>Admin verifies payment before the seller is paid.</p></div>
+    </section>
+    <section class="card">
+      <h3>Why Admin Deal?</h3>
+      <ul class="checks">
+        <li>Every payment is verified by admin before release</li>
+        <li>Public reputation: success rate and scam reports</li>
+        <li>Sign-in is optional, and gives you a profile and deal history</li>
+      </ul>
+      ${ME ? '' : `<div style="margin-top:14px"><button class="btn ghost block" id="loginCta">Sign in (optional)</button></div>`}
+    </section>
+  </div>`;
 }
 
-function room() {
-  $('#app').innerHTML = `
-    <div class="card" id="info" style="margin-top:14px">লোড হচ্ছে...</div>
-    <div id="chat"></div>
-    <div class="composer hide" id="composer">
-      <input id="txt" placeholder="বার্তা লিখুন..." maxlength="1000">
-      <button class="btn" id="send">পাঠান</button>
+async function newDeal() {
+  const d = await api('room', { method: 'POST' });
+  location.href = '/?room=' + d.id;
+}
+
+/* ---------- Deal room ---------- */
+function dealShell() {
+  $('#app').innerHTML = `<div class="deal">
+    <div class="deal-head">
+      <a class="icon-btn" href="/" aria-label="Back">←</a>
+      <div class="grow">
+        <div class="dtitle">Deal #${esc(roomId)}</div>
+        <div class="dsub" id="dsub">Loading…</div>
+      </div>
+      <span class="pill" id="pill"></span>
     </div>
-    <div class="card" id="panel"></div>`;
-  mem = JSON.parse(localStorage.getItem('mem_' + roomId) || 'null');
-  poll();
-  setInterval(poll, 2500);
+    <div class="people" id="people"></div>
+    <div id="banner"></div>
+    <div class="chat" id="chat"></div>
+    <div class="actions" id="panel"></div>
+    <div class="composer" id="composer" hidden>
+      <input id="txt" maxlength="1000" placeholder="Type a message…" autocomplete="off">
+      <button class="btn sm" id="send">Send</button>
+    </div>
+  </div>`;
 }
 
-async function poll() {
-  try { S = await api('room/' + roomId); render(); }
-  catch (e) { $('#info').textContent = e.message; }
-}
-
-function render() {
+function renderDeal() {
   const r = S;
-  const me = mem && r.members.find(x => x.id === mem.id);
-  const myRole = me ? me.role : null;
+  const mine = r.mine || { isMember: false, role: null };
+  const ended = r.status !== 'active';
+  const pill = $('#pill');
+  pill.textContent = ended ? STATUS[r.status] : STEP[r.step];
+  pill.className = 'pill' + (r.status === 'done' ? ' ok' : r.status === 'cancelled' ? ' bad' : '');
+  $('#dsub').textContent = r.amount ? `Amount ৳${r.amount} · Total ৳${r.total}` : 'Waiting for amount';
 
-  $('#info').innerHTML = `
-    <div class="row" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
-      <b>ডিল #${esc(r.id)}</b>
-      <span class="chip">${STEP[r.step]}</span>
-    </div>
-    <div style="margin-top:8px;font-size:13px;color:var(--muted)">
-      ${r.members.map(x => x.role ? `${AV[x.role]} ${LBL[x.role]}` : '👤 সদস্য').join(' &nbsp;•&nbsp; ') || 'এখনো কেউ যুক্ত হননি'}
-    </div>
-    ${r.amount ? `<div style="margin-top:6px;font-size:14px">পরিমাণ <b>৳${r.amount}</b> &nbsp;|&nbsp; মোট ৳${r.total}</div>` : ''}
-    <div class="meta">লিংক শেয়ার করুন: ${esc(location.href)}</div>
-    <button class="btn ghost" style="margin-top:8px" id="copy">লিংক কপি করুন</button>`;
+  renderPeople(r, mine, ended);
+  renderBanner(r, mine);
 
   const chat = $('#chat');
-  const atBottom = chat.scrollTop + chat.clientHeight >= chat.scrollHeight - 60;
-  if (r.messages.length !== lastCount) {
-    chat.innerHTML = r.messages.map(m => msgHTML(m, myRole)).join('');
-    lastCount = r.messages.length;
-    if (atBottom || lastCount <= 1) chat.scrollTop = chat.scrollHeight;
+  if (r.messages.length !== lastMsgCount || r.step !== lastStep) {
+    const near = chat.scrollTop + chat.clientHeight >= chat.scrollHeight - 100;
+    chat.innerHTML = r.messages.map(m => msgHTML(m, mine.role)).join('') || '<div class="note">No messages yet.</div>';
+    if (lastMsgCount < 0 || near) chat.scrollTop = chat.scrollHeight;
+    lastMsgCount = r.messages.length;
+    lastStep = r.step;
   }
+  $('#composer').hidden = !(mine.isMember && mine.role && MANUAL.includes(r.step) && !ended);
 
-  const canType = !!myRole && MANUAL.includes(r.step);
-  $('#composer').classList.toggle('hide', !canType);
-
-  const h = mem && !me && r.members.length >= 2 ? '<p>এই ডিলে ইতিমধ্যে ২ জন আছেন।</p>' : ACT(r, me);
-  const panel = $('#panel');
-  if (panelHTML !== h) { panel.innerHTML = h; panelHTML = h; }
-  if (!me && r.members.length < 2 && !panel.querySelector('#join')) { /* join button in ACT */ }
+  const h = actionHTML(r, mine, ended);
+  if (h !== lastPanel) { $('#panel').innerHTML = h; lastPanel = h; }
 }
 
 function msgHTML(m, myRole) {
-  if (m.who === 'sys') return `<div class="center"><span class="sys">${esc(m.text)}</span></div>`;
+  if (m.who === 'sys') return `<div class="sysline"><span>${esc(m.text)}</span></div>`;
   const mine = m.who === myRole;
   return `<div class="msg ${m.who} ${mine ? 'me' : ''}">
     <div class="av ${m.who}">${AV[m.who] || '•'}</div>
     <div class="bub">
-      <div class="lbl">${LBL[m.who]}</div>
+      <div class="lbl">${LBL[m.who] || ''}</div>
       <div class="txt">${esc(m.text)}</div>
       <div class="tm">${timeStr(m.t)}</div>
     </div></div>`;
 }
 
-function ACT(r, me) {
-  if (!me) {
-    return r.members.length < 2
-      ? `<h2>ডিলে যোগ দিন</h2><p>যোগ দিলে আপনি সদস্য হিসেবে যুক্ত হবেন।</p><button class="btn block" id="join" data-a="join">ডিলে যোগ দিন</button>`
-      : '<p>এই ডিলে ইতিমধ্যে ২ জন সদস্য আছেন।</p>';
+function renderPeople(r, mine, ended) {
+  const slot = role => {
+    const mem = r.members.find(x => x.role === role);
+    const uid = mem && mem.uid;
+    const sub = !mem ? 'Waiting' : uid ? 'Member · view profile' : 'Guest';
+    return `<div class="person" ${uid ? `data-profile="${esc(uid)}"` : ''}>
+      <div class="av lg ${role}">${AV[role]}</div>
+      <div class="grow"><div class="pname">${LBL[role]}</div><div class="psub">${sub}</div></div>
+    </div>`;
+  };
+  const other = mine.isMember && r.members.find(x => x.role && x.role !== mine.role);
+  const canReport = other && other.uid && !ended;
+  const html = slot('buyer') + slot('seller') +
+    (canReport ? `<button class="btn ghost sm" id="reportBtn" style="flex:none">⚠ Report</button>` : '');
+  if (html !== lastPeople) { $('#people').innerHTML = html; lastPeople = html; }
+}
+
+function renderBanner(r, mine) {
+  let h = '';
+  if (!mine.isMember) {
+    h = r.members.length < 2
+      ? `<div class="banner join"><div><b>You're invited to this deal</b><div class="muted">Join to chat and take part.</div></div>
+         <button class="btn" id="joinBtn">Join deal</button></div>`
+      : `<div class="banner"><div class="muted">This deal already has two members.</div></div>`;
   }
-  const role = me.role;
+  if (h !== lastBanner) { $('#banner').innerHTML = h; lastBanner = h; }
+}
+
+function actionHTML(r, mine, ended) {
+  if (!mine.isMember) return '';
+  if (ended) return `<div class="note">${r.status === 'done' ? '✅ This deal is completed. Thank you.' : 'This deal was cancelled.'}</div>`;
+  const role = mine.role;
   switch (r.step) {
-    case 'join': return '<p>অপেক্ষা করুন, আরেকজন যুক্ত হলে পরের ধাপ শুরু হবে।</p>';
-    case 'roles': return role
-      ? '<p>অন্যজনের ভূমিকা বাছাইয়ের অপেক্ষা...</p>'
-      : `<h2>আপনি কে?</h2><button class="btn buyer block" data-a="role" data-v="buyer">🛒 আমি ক্রেতা</button>
-         <button class="btn seller block" data-a="role" data-v="seller">🏪 আমি বিক্রেতা</button>`;
-    case 'amount': return role === 'seller'
-      ? `<h2>ডিলের পরিমাণ</h2><input id="amt" type="number" min="1" placeholder="টাকার পরিমাণ লিখুন">
-         <button class="btn seller block" data-a="amount">নিশ্চিত করুন</button>`
-      : '<p>বিক্রেতা ডিলের পরিমাণ লিখছেন...</p>';
+    case 'roles':
+      return role
+        ? `<div class="note">Waiting for the other party to choose a role…</div>`
+        : `<div class="label">Who are you in this deal?</div>
+           <div class="grid2">
+             <button class="btn buyer" data-a="role" data-v="buyer">🛒 I'm the Buyer</button>
+             <button class="btn seller" data-a="role" data-v="seller">🏪 I'm the Seller</button>
+           </div>`;
+    case 'amount':
+      return role === 'seller'
+        ? `<div class="label">Deal amount (BDT)</div>
+           <div class="row"><input id="amt" type="number" min="1" inputmode="decimal" placeholder="e.g. 5000">
+           <button class="btn seller" data-a="amount">Set</button></div>`
+        : `<div class="note">Waiting for the seller to set the amount…</div>`;
     case 'pay': {
-      if (role !== 'buyer') return '<p>ক্রেতার পেমেন্টের অপেক্ষা।</p>';
+      if (role !== 'buyer') return `<div class="note">Waiting for the buyer to make the payment…</div>`;
       if (!r.method) {
-        const list = (S_METHODS || []).map((x, i) => `<button class="btn buyer" data-a="method" data-v="${i}">${esc(x.name)}</button>`).join('');
-        return `<h2>পেমেন্ট মাধ্যম</h2><div class="row">${list}</div>`;
+        const list = SET.methods.map((x, i) => `<button class="btn buyer" data-a="method" data-v="${i}">${esc(x.name)}</button>`).join('');
+        return `<div class="label">Choose payment method</div><div class="row wrap">${list}</div>`;
       }
-      return `<button class="btn buyer block" data-a="sent">✅ টাকা পাঠিয়েছি</button>`;
+      return `<button class="btn buyer block" data-a="sent">✅ I have sent the money</button>`;
     }
-    case 'verify': return role === 'buyer' ? '<p>অ্যাডমিন পেমেন্ট যাচাই করছেন। একটু অপেক্ষা করুন।</p>' : '<p>অ্যাডমিন পেমেন্ট যাচাই করছেন।</p>';
-    case 'deliver': return role === 'buyer'
-      ? `<button class="btn buyer block" data-a="received">📦 পণ্য/সেবা পেয়েছি</button>`
-      : '<p>ক্রেতার নিশ্চিতকরণের অপেক্ষা।</p>';
-    case 'release': return '<p>অ্যাডমিন বিক্রেতাকে টাকা পাঠাচ্ছেন। 💸</p>';
-    default: return '<p>✅ ডিল সম্পন্ন হয়েছে। ধন্যবাদ।</p>';
+    case 'verify':
+      return `<div class="note">${role === 'buyer' ? 'Admin is verifying your payment…' : 'Admin is verifying the payment…'}</div>`;
+    case 'deliver':
+      return role === 'buyer'
+        ? `<button class="btn buyer block" data-a="received">📦 I received the goods / service</button>`
+        : `<div class="note">Waiting for the buyer to confirm delivery…</div>`;
+    case 'release':
+      return `<div class="note">Admin is releasing the payment to the seller 💸</div>`;
+    default: return '';
   }
 }
 
-let SETTINGS = null;
+async function poll() {
+  try { S = await api('room/' + roomId, { member: memberId }); renderDeal(); }
+  catch (e) { toast(e.message); }
+}
+
+async function join() {
+  const d = await api(`room/${roomId}/join`, { method: 'POST' });
+  memberId = d.memberId;
+  localStorage.setItem('mem_' + roomId, memberId);
+  S = d.room;
+  lastBanner = '';
+  renderDeal();
+  toast('You joined the deal');
+}
+
+async function act(a, v) {
+  if (a === 'amount') {
+    v = $('#amt') ? $('#amt').value : '';
+    if (!v) return toast('Enter an amount');
+  }
+  S = await api(`room/${roomId}/action`, { method: 'POST', body: { memberId, action: a, value: v } });
+  renderDeal();
+}
+
+async function sendMsg() {
+  const i = $('#txt');
+  const text = i.value.trim();
+  if (!text) return;
+  S = await api(`room/${roomId}/msg`, { method: 'POST', body: { memberId, text } });
+  i.value = '';
+  renderDeal();
+}
+
+/* ---------- Sheets (profile, login, report) ---------- */
+function sheet(html) { $('#sheetBody').innerHTML = `<div class="grab"></div>${html}`; $('#sheet').classList.add('open'); }
+function closeSheet() { $('#sheet').classList.remove('open'); }
+
+function dealsHTML(deals) {
+  if (!deals || !deals.length) return `<div class="muted" style="padding:10px 0">No deals yet.</div>`;
+  return deals.map(d => `<div class="drow">
+      <div><b>Deal #${esc(d.id)}</b><div class="muted">You were ${d.role ? LBL[d.role] : 'a member'} · ${dateStr(d.t)}</div></div>
+      <div style="text-align:right"><b>৳${d.amount || 0}</b><div><span class="badge ${d.status}">${STATUS[d.status]}</span></div></div>
+    </div>`).join('');
+}
+
+function profileHTML(u, s, mineView) {
+  const rate = s.rate === null ? '—' : s.rate + '%';
+  return `<div class="ph">
+      <div class="pav">${u.picture ? `<img src="${esc(u.picture)}" alt="">` : '👤'}</div>
+      <div class="grow"><div class="pn">${esc(u.name)}</div>
+        <div class="muted">${u.uid.startsWith('google_') ? 'Google' : 'Facebook'} member</div></div>
+    </div>
+    <div class="stats">
+      <div><b>${s.totalDeals}</b><span>Total deals</span></div>
+      <div><b>${rate}</b><span>Success rate</span></div>
+      <div><b>${s.done}</b><span>Completed</span></div>
+      <div class="${s.scamReports ? 'bad' : ''}"><b>${s.scamReports}</b><span>Scam reports</span></div>
+    </div>
+    ${mineView ? `<h3 style="margin:14px 0 2px">My deals</h3>${dealsHTML(s.deals)}
+      <button class="btn ghost block" id="logout" style="margin-top:14px">Log out</button>` : ''}
+    <button class="btn ghost block" data-close="1" style="margin-top:10px">Close</button>`;
+}
+
+async function openProfile(uid) {
+  const d = await api('profile/' + encodeURIComponent(uid));
+  sheet(profileHTML(d.user, d.stats, false));
+}
+
+async function openMe() {
+  const d = await api('me');
+  ME = d.user;
+  renderAuth();
+  sheet(profileHTML(d.user, d.stats, true));
+}
+
+function openLogin() {
+  sheet(`<h2>Sign in</h2>
+    <p>Optional. Sign in to build your profile, deal history and reputation.</p>
+    ${SET.googleClientId ? '<div id="gbtn" class="row" style="justify-content:center;margin:14px 0"></div>' : ''}
+    ${SET.fbAppId ? '<button class="btn fb block" id="fbBtn" style="margin:8px 0">Continue with Facebook</button>' : ''}
+    ${!SET.googleClientId && !SET.fbAppId ? '<p>Sign-in is not set up yet. You can continue as a guest.</p>' : ''}
+    <button class="btn ghost block" data-close="1" style="margin-top:8px">Continue as guest</button>`);
+  loadGoogle();
+  loadFB();
+}
+
+function loadGoogle() {
+  if (!SET.googleClientId) return;
+  const init = () => {
+    google.accounts.id.initialize({
+      client_id: SET.googleClientId,
+      callback: r => doLogin('auth/google', { credential: r.credential })
+    });
+    const el = $('#gbtn');
+    if (el) google.accounts.id.renderButton(el, { theme: 'outline', size: 'large', shape: 'pill', width: 280 });
+  };
+  if (window.google && google.accounts) return init();
+  const s = document.createElement('script');
+  s.src = 'https://accounts.google.com/gsi/client';
+  s.async = true;
+  s.onload = init;
+  document.head.appendChild(s);
+}
+
+function loadFB() {
+  if (!SET.fbAppId) return;
+  window.fbAsyncInit = () => FB.init({ appId: SET.fbAppId, cookie: true, xfbml: false, version: 'v19.0' });
+  if (!window.FB) {
+    const s = document.createElement('script');
+    s.src = 'https://connect.facebook.net/en_US/sdk.js';
+    s.async = true; s.defer = true; s.crossOrigin = 'anonymous';
+    document.head.appendChild(s);
+  } else window.fbAsyncInit();
+}
+
+function fbLogin() {
+  if (!window.FB) return toast('Facebook is still loading, try again');
+  FB.login(res => {
+    if (res.authResponse) doLogin('auth/facebook', { accessToken: res.authResponse.accessToken });
+    else toast('Facebook login cancelled');
+  }, { scope: 'public_profile' });
+}
+
+async function doLogin(path, body) {
+  const d = await api(path, { method: 'POST', body });
+  session = d.token;
+  localStorage.setItem('ad_session', session);
+  ME = d.user;
+  closeSheet();
+  renderAuth();
+  if (!roomId) home();
+  toast('Signed in');
+}
+
+function logout() {
+  session = '';
+  localStorage.removeItem('ad_session');
+  ME = null;
+  closeSheet();
+  renderAuth();
+  toast('Logged out');
+}
+
+function openReport() {
+  sheet(`<h2>Report this user</h2>
+    <p>Report only real scams or serious problems. Admin reviews every report.</p>
+    <textarea id="rtxt" maxlength="300" placeholder="What happened?"></textarea>
+    <button class="btn block" id="sendReport" style="margin-top:10px">Submit report</button>
+    <button class="btn ghost block" data-close="1" style="margin-top:8px">Cancel</button>`);
+}
+
+async function sendReport() {
+  const reason = $('#rtxt').value.trim();
+  if (!reason) return toast('Write a reason');
+  await api(`room/${roomId}/report`, { method: 'POST', body: { memberId, reason } });
+  closeSheet();
+  toast('Report submitted');
+}
+
+/* ---------- Events ---------- */
 document.addEventListener('click', async e => {
-  const b = e.target.closest('button');
-  if (!b) return;
+  const t = e.target.closest('button, [data-profile]');
+  if (!t) return;
   try {
-    if (b.id === 'copy') { await navigator.clipboard.writeText(location.href); toast('লিংক কপি হয়েছে'); return; }
-    if (b.id === 'send') {
-      const text = $('#txt').value.trim();
-      if (!text) return;
-      await api(`room/${roomId}/msg`, { method: 'POST', body: { memberId: mem.id, text } });
-      $('#txt').value = '';
-      return poll();
-    }
-    if (!b.dataset.a) return;
-    if (b.dataset.a === 'join') {
-      const d = await api(`room/${roomId}/join`, { method: 'POST', body: {} });
-      mem = d.member;
-      localStorage.setItem('mem_' + roomId, JSON.stringify(mem));
-    } else {
-      let value = b.dataset.v;
-      if (b.dataset.a === 'amount') {
-        value = $('#amt').value;
-        if (!value) return toast('পরিমাণ লিখুন');
-      }
-      await api(`room/${roomId}/action`, { method: 'POST', body: { memberId: mem.id, action: b.dataset.a, value } });
-    }
-    await poll();
+    if (t.id === 'newDeal') return await newDeal();
+    if (t.id === 'loginBtn' || t.id === 'loginCta') return openLogin();
+    if (t.id === 'myProfile') return await openMe();
+    if (t.id === 'fbBtn') return fbLogin();
+    if (t.id === 'joinBtn') return await join();
+    if (t.id === 'send') return await sendMsg();
+    if (t.id === 'reportBtn') return openReport();
+    if (t.id === 'sendReport') return await sendReport();
+    if (t.id === 'logout') return logout();
+    if (t.dataset.close !== undefined) return closeSheet();
+    if (t.dataset.profile) return await openProfile(t.dataset.profile);
+    if (t.dataset.a) return await act(t.dataset.a, t.dataset.v);
   } catch (err) { toast(err.message); }
 });
 
+$('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeSheet(); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && e.target.id === 'txt') $('#send').click();
+  if (e.key === 'Enter' && e.target.id === 'txt') sendMsg().catch(err => toast(err.message));
 });
 
+/* ---------- Start ---------- */
 async function init() {
-  try { SETTINGS = await api('settings'); } catch {}
-  if (SETTINGS) S_METHODS = SETTINGS.methods;
-  roomId ? room() : home();
+  try { SET = await api('settings'); } catch {}
+  if (session) {
+    try { ME = (await api('me')).user; }
+    catch { session = ''; localStorage.removeItem('ad_session'); }
+  }
+  renderAuth();
+  if (roomId) {
+    dealShell();
+    await poll();
+    setInterval(poll, 2500);
+  } else {
+    home();
+  }
+  setInterval(async () => { try { SET = await api('settings'); } catch {} }, 20000);
 }
-let S_METHODS = [];
 init();
 </script>
 </body>
