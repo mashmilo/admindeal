@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>নিরাপদ এসক্রো</title>
+<style>
+body{font-family:system-ui,'Noto Sans Bengali',sans-serif;margin:0;background:#eef2f7;color:#111}
+header{background:#1d4ed8;color:#fff;padding:14px;text-align:center;font-weight:600}
+main{max-width:520px;margin:0 auto;padding:12px}
+.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px #0001}
+button{background:#1d4ed8;color:#fff;border:0;border-radius:8px;padding:10px 14px;margin:4px 4px 4px 0;font-size:15px;cursor:pointer}
+button.alt{background:#64748b}
+input{padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;width:100%;box-sizing:border-box;margin:6px 0}
+#chat{height:50vh;overflow:auto;background:#fff;border-radius:12px;padding:10px;box-shadow:0 1px 3px #0001;margin-bottom:12px}
+.m{margin:8px 0;padding:8px 10px;border-radius:10px;background:#f1f5f9;white-space:pre-wrap;font-size:15px}
+.m.bot{background:#e0ecff}.m.admin{background:#fef3c7}
+.m small{display:block;color:#64748b;font-size:12px;margin-bottom:2px}
+footer{text-align:center;font-size:12px;color:#64748b;margin:14px}
+</style>
+</head>
+<body>
+<header>🔒 নিরাপদ এসক্রো</header>
+<main id="app"></main>
+<footer><a href="/admin.html">অ্যাডমিন</a></footer>
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+async function api(p, opt = {}) {
+  const r = await fetch('/api/' + p, {
+    method: opt.method || 'GET',
+    headers: { 'content-type': 'application/json' },
+    body: opt.body ? JSON.stringify(opt.body) : undefined
+  });
+  const d = await r.json();
+  if (!r.ok) throw new Error(d.error || 'সমস্যা হয়েছে');
+  return d;
+}
+
+const ROLE = { buyer: 'ক্রেতা', seller: 'বিক্রেতা' };
+const STEPS = {
+  join: 'সদস্য যুক্ত হচ্ছেন', roles: 'ভূমিকা বাছাই', amount: 'ডিলের পরিমাণ',
+  pay: 'ক্রেতার পেমেন্ট', verify: 'অ্যাডমিন যাচাই করছেন',
+  deliver: 'ক্রেতার নিশ্চিতকরণ', release: 'বিক্রেতাকে পেমেন্ট', done: 'সম্পন্ন ✅'
+};
+const roomId = new URLSearchParams(location.search).get('room');
+let me = null, S = null;
+
+function home() {
+  $('#app').innerHTML = `<div class="card"><h3>নতুন ডিল শুরু করুন</h3>
+    <p>একটি গ্রুপ চ্যাট তৈরি হবে। লিংকটি ক্রেতা ও বিক্রেতাকে দিন। কোনো লগইন লাগবে না।</p>
+    <button id="new">নতুন ডিল তৈরি করুন</button></div>`;
+  $('#new').onclick = async () => {
+    try { const d = await api('room', { method: 'POST' }); location.href = '/?room=' + d.id; }
+    catch (e) { alert(e.message); }
+  };
+}
+
+function room() {
+  $('#app').innerHTML = `<div class="card" id="info">লোড হচ্ছে...</div>
+    <div id="chat"></div><div class="card" id="act"></div>`;
+  me = JSON.parse(localStorage.getItem('mem_' + roomId) || 'null');
+  poll();
+  setInterval(poll, 3000);
+}
+
+async function poll() {
+  try { S = await api('room/' + roomId); render(); }
+  catch (e) { $('#info').textContent = e.message; }
+}
+
+function render() {
+  const r = S, mm = me && r.members.find(x => x.id === me.id);
+  $('#info').innerHTML = `<b>ডিল আইডি:</b> ${esc(r.id)}<br>
+    <b>সদস্য:</b> ${r.members.map(x => esc(x.name) + (x.role ? ` (${ROLE[x.role]})` : '')).join(', ') || 'এখনো কেউ নেই'}<br>
+    <b>ধাপ:</b> ${STEPS[r.step]}<br>
+    <small>লিংক শেয়ার করুন: ${esc(location.href)}</small>`;
+  const chat = $('#chat');
+  const atBottom = chat.scrollTop + chat.clientHeight >= chat.scrollHeight - 40;
+  chat.innerHTML = r.messages.map(m =>
+    `<div class="m ${m.type}"><small>${esc(m.from)} • ${new Date(m.t).toLocaleTimeString()}</small>${esc(m.text)}</div>`).join('');
+  if (atBottom) chat.scrollTop = chat.scrollHeight;
+
+  let h;
+  if (!mm) {
+    h = r.members.length < 2
+      ? `<input id="nm" placeholder="আপনার নাম লিখুন" maxlength="30"><button id="jn">ডিলে যুক্ত হন</button>`
+      : '<p>এই ডিলে ইতিমধ্যে ২ জন সদস্য আছেন।</p>';
+  } else h = ACT(r, mm);
+  if ($('#act').dataset.h !== h) { $('#act').innerHTML = h; $('#act').dataset.h = h; }
+}
+
+function ACT(r, mm) {
+  const isB = mm.role === 'buyer';
+  switch (r.step) {
+    case 'join': return '<p>অপেক্ষা করুন, আরেকজন যুক্ত হলে ভূমিকা বাছাই শুরু হবে।</p>';
+    case 'roles': return mm.role
+      ? '<p>অন্যজনের ভূমিকা বাছাইয়ের অপেক্ষা...</p>'
+      : `<button data-a="role" data-v="buyer">আমি ক্রেতা</button><button class="alt" data-a="role" data-v="seller">আমি বিক্রেতা</button>`;
+    case 'amount': return isB
+      ? `<input id="amt" type="number" min="1" placeholder="ডিলের পরিমাণ (টাকা)"><button data-a="amount">নিশ্চিত করুন</button>`
+      : '<p>ক্রেতা ডিলের পরিমাণ লিখছেন...</p>';
+    case 'pay': return isB
+      ? `<p>উপরের নম্বরে টাকা পাঠিয়ে নিচের বাটনে ক্লিক করুন।</p><button data-a="sent">✅ টাকা পাঠিয়েছি</button>`
+      : '<p>ক্রেতার পেমেন্টের অপেক্ষা।</p>';
+    case 'verify': return '<p>অ্যাডমিন পেমেন্ট যাচাই করছেন। একটু অপেক্ষা করুন।</p>';
+    case 'deliver': return isB
+      ? `<button data-a="received">📦 পণ্য/সেবা পেয়েছি</button>`
+      : '<p>ক্রেতার নিশ্চিতকরণের অপেক্ষা।</p>';
+    case 'release': return '<p>অ্যাডমিন বিক্রেতাকে টাকা পাঠাচ্ছেন। 💸</p>';
+    default: return '<p>✅ ডিল সম্পন্ন হয়েছে। ধন্যবাদ।</p>';
+  }
+}
+
+document.addEventListener('click', async e => {
+  const b = e.target.closest('button');
+  if (!b || !roomId) return;
+  try {
+    if (b.id === 'jn') {
+      const name = $('#nm').value.trim();
+      if (!name) return alert('নাম লিখুন');
+      const d = await api(`room/${roomId}/join`, { method: 'POST', body: { name } });
+      me = d.member;
+      localStorage.setItem('mem_' + roomId, JSON.stringify(me));
+    } else if (b.dataset.a) {
+      let value = b.dataset.v;
+      if (b.dataset.a === 'amount') {
+        value = $('#amt').value;
+        if (!value) return alert('পরিমাণ লিখুন');
+      }
+      await api(`room/${roomId}/action`, { method: 'POST', body: { memberId: me.id, action: b.dataset.a, value } });
+    } else return;
+    await poll();
+  } catch (err) { alert(err.message); }
+});
+
+roomId ? room() : home();
+</script>
+</html>
