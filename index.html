@@ -4,28 +4,66 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>নিরাপদ এসক্রো</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-body{font-family:system-ui,'Noto Sans Bengali',sans-serif;margin:0;background:#eef2f7;color:#111}
-header{background:#1d4ed8;color:#fff;padding:14px;text-align:center;font-weight:600}
-main{max-width:520px;margin:0 auto;padding:12px}
-.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px #0001}
-button{background:#1d4ed8;color:#fff;border:0;border-radius:8px;padding:10px 14px;margin:4px 4px 4px 0;font-size:15px;cursor:pointer}
-button.alt{background:#64748b}
-input{padding:10px;border:1px solid #cbd5e1;border-radius:8px;font-size:15px;width:100%;box-sizing:border-box;margin:6px 0}
-#chat{height:50vh;overflow:auto;background:#fff;border-radius:12px;padding:10px;box-shadow:0 1px 3px #0001;margin-bottom:12px}
-.m{margin:8px 0;padding:8px 10px;border-radius:10px;background:#f1f5f9;white-space:pre-wrap;font-size:15px}
-.m.bot{background:#e0ecff}.m.admin{background:#fef3c7}
-.m small{display:block;color:#64748b;font-size:12px;margin-bottom:2px}
-footer{text-align:center;font-size:12px;color:#64748b;margin:14px}
+:root{--bg:#f0f2f5;--card:#fff;--text:#1c1e21;--muted:#65676b;--line:#e4e6eb;--buyer:#2563eb;--seller:#16a34a;--admin:#d97706;--bot:#64748b;--primary:#2563eb}
+*{box-sizing:border-box}
+body{margin:0;font-family:'Noto Sans Bengali',system-ui,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
+.top{background:#fff;border-bottom:1px solid var(--line);padding:12px 16px;position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:700;font-size:17px;color:var(--primary)}
+.wrap{max-width:640px;margin:0 auto;padding:14px}
+.card{background:var(--card);border-radius:14px;padding:18px;border:1px solid var(--line);margin-bottom:14px}
+h2{margin:0 0 6px;font-size:19px}
+p{margin:6px 0;color:var(--muted)}
+.btn{border:0;border-radius:10px;padding:11px 16px;font:600 14px 'Noto Sans Bengali',sans-serif;cursor:pointer;color:#fff;background:var(--primary);margin:4px 4px 4px 0}
+.btn.buyer{background:var(--buyer)}.btn.seller{background:var(--seller)}
+.btn.ghost{background:#e4e6eb;color:var(--text)}
+.btn:disabled{opacity:.5;cursor:default}
+.btn.block{width:100%;margin:6px 0 0}
+.chip{display:inline-block;padding:3px 10px;border-radius:99px;background:#eef2ff;color:var(--primary);font-size:12px;font-weight:600}
+.meta{font-size:13px;color:var(--muted);margin-top:6px;word-break:break-all}
+#chat{height:calc(100vh - 330px);min-height:280px;overflow-y:auto;padding:14px;background:#e9edf3;border:1px solid var(--line);border-bottom:0;border-radius:14px 14px 0 0}
+.msg{display:flex;gap:8px;margin:10px 0;align-items:flex-end}
+.msg.me{flex-direction:row-reverse}
+.av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;color:#fff;flex:none}
+.av.buyer{background:var(--buyer)}.av.seller{background:var(--seller)}.av.admin{background:var(--admin)}.av.bot{background:var(--bot)}
+.bub{max-width:72%}
+.lbl{font-size:12px;color:var(--muted);margin:0 6px 2px;font-weight:600}
+.msg.me .lbl{text-align:right}
+.txt{padding:9px 13px;border-radius:16px;color:#fff;white-space:pre-wrap;word-break:break-word}
+.msg.buyer .txt{background:var(--buyer)}
+.msg.seller .txt{background:var(--seller)}
+.msg.admin .txt{background:var(--admin)}
+.msg.bot .txt{background:var(--bot)}
+.msg.me .txt{border-bottom-right-radius:4px}
+.msg:not(.me) .txt{border-bottom-left-radius:4px}
+.tm{font-size:11px;color:var(--muted);margin:2px 6px 0}
+.msg.me .tm{text-align:right}
+.sys{text-align:center;font-size:12px;color:var(--muted);margin:10px 0;background:#d8dee8;display:inline-block;padding:3px 10px;border-radius:99px;width:auto}
+.center{text-align:center}
+.composer{display:flex;gap:8px;background:#fff;border:1px solid var(--line);border-radius:0 0 14px 14px;padding:10px;margin-bottom:14px}
+.composer input{border-radius:99px;flex:1}
+input{padding:11px 14px;border:1px solid #ccd0d5;border-radius:10px;font:15px 'Noto Sans Bengali',sans-serif;width:100%;background:#fff}
+.hide{display:none}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1c1e21;color:#fff;padding:10px 16px;border-radius:10px;font-size:14px;display:none;z-index:9}
 </style>
 </head>
 <body>
-<header>🔒 নিরাপদ এসক্রো</header>
-<main id="app"></main>
-<footer><a href="/admin.html">অ্যাডমিন</a></footer>
+<div class="top">
+  <div class="brand">🔒 নিরাপদ এসক্রো</div>
+  <a href="/admin.html" style="font-size:13px;color:var(--muted);text-decoration:none">অ্যাডমিন</a>
+</div>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast"></div>
+
 <script>
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const toast = t => { const el = $('#toast'); el.textContent = t; el.style.display = 'block'; setTimeout(() => el.style.display = 'none', 2200); };
+const timeStr = t => new Date(t).toLocaleTimeString('bn-BD', { hour: '2-digit', minute: '2-digit' });
+
 async function api(p, opt = {}) {
   const r = await fetch('/api/' + p, {
     method: opt.method || 'GET',
@@ -37,31 +75,39 @@ async function api(p, opt = {}) {
   return d;
 }
 
-const ROLE = { buyer: 'ক্রেতা', seller: 'বিক্রেতা' };
-const STEPS = {
-  join: 'সদস্য যুক্ত হচ্ছেন', roles: 'ভূমিকা বাছাই', amount: 'ডিলের পরিমাণ',
-  pay: 'ক্রেতার পেমেন্ট', verify: 'অ্যাডমিন যাচাই করছেন',
-  deliver: 'ক্রেতার নিশ্চিতকরণ', release: 'বিক্রেতাকে পেমেন্ট', done: 'সম্পন্ন ✅'
+const LBL = { buyer: 'ক্রেতা', seller: 'বিক্রেতা', admin: 'অ্যাডমিন', bot: 'বট' };
+const AV = { buyer: '🛒', seller: '🏪', admin: '🛡️', bot: '🤖' };
+const STEP = {
+  join: 'যোগদান', roles: 'ভূমিকা বাছাই', amount: 'পরিমাণ', pay: 'পেমেন্ট',
+  verify: 'যাচাই চলছে', deliver: 'নিশ্চিতকরণ', release: 'বিক্রেতাকে পেমেন্ট', done: 'সম্পন্ন ✅'
 };
+const MANUAL = ['verify', 'deliver', 'release', 'done'];
 const roomId = new URLSearchParams(location.search).get('room');
-let me = null, S = null;
+let S = null, mem = null, panelHTML = '', lastCount = -1;
 
 function home() {
-  $('#app').innerHTML = `<div class="card"><h3>নতুন ডিল শুরু করুন</h3>
-    <p>একটি গ্রুপ চ্যাট তৈরি হবে। লিংকটি ক্রেতা ও বিক্রেতাকে দিন। কোনো লগইন লাগবে না।</p>
-    <button id="new">নতুন ডিল তৈরি করুন</button></div>`;
+  $('#app').innerHTML = `<div class="card" style="margin-top:24px">
+    <h2>নতুন ডিল শুরু করুন</h2>
+    <p>একটি ডিল রুম তৈরি হবে। লিংকটি ক্রেতা ও বিক্রেতাকে পাঠান। কোনো লগইন লাগবে না।</p>
+    <button class="btn" id="new">নতুন ডিল তৈরি করুন</button></div>`;
   $('#new').onclick = async () => {
     try { const d = await api('room', { method: 'POST' }); location.href = '/?room=' + d.id; }
-    catch (e) { alert(e.message); }
+    catch (e) { toast(e.message); }
   };
 }
 
 function room() {
-  $('#app').innerHTML = `<div class="card" id="info">লোড হচ্ছে...</div>
-    <div id="chat"></div><div class="card" id="act"></div>`;
-  me = JSON.parse(localStorage.getItem('mem_' + roomId) || 'null');
+  $('#app').innerHTML = `
+    <div class="card" id="info" style="margin-top:14px">লোড হচ্ছে...</div>
+    <div id="chat"></div>
+    <div class="composer hide" id="composer">
+      <input id="txt" placeholder="বার্তা লিখুন..." maxlength="1000">
+      <button class="btn" id="send">পাঠান</button>
+    </div>
+    <div class="card" id="panel"></div>`;
+  mem = JSON.parse(localStorage.getItem('mem_' + roomId) || 'null');
   poll();
-  setInterval(poll, 3000);
+  setInterval(poll, 2500);
 }
 
 async function poll() {
@@ -70,70 +116,126 @@ async function poll() {
 }
 
 function render() {
-  const r = S, mm = me && r.members.find(x => x.id === me.id);
-  $('#info').innerHTML = `<b>ডিল আইডি:</b> ${esc(r.id)}<br>
-    <b>সদস্য:</b> ${r.members.map(x => esc(x.name) + (x.role ? ` (${ROLE[x.role]})` : '')).join(', ') || 'এখনো কেউ নেই'}<br>
-    <b>ধাপ:</b> ${STEPS[r.step]}<br>
-    <small>লিংক শেয়ার করুন: ${esc(location.href)}</small>`;
-  const chat = $('#chat');
-  const atBottom = chat.scrollTop + chat.clientHeight >= chat.scrollHeight - 40;
-  chat.innerHTML = r.messages.map(m =>
-    `<div class="m ${m.type}"><small>${esc(m.from)} • ${new Date(m.t).toLocaleTimeString()}</small>${esc(m.text)}</div>`).join('');
-  if (atBottom) chat.scrollTop = chat.scrollHeight;
+  const r = S;
+  const me = mem && r.members.find(x => x.id === mem.id);
+  const myRole = me ? me.role : null;
 
-  let h;
-  if (!mm) {
-    h = r.members.length < 2
-      ? `<input id="nm" placeholder="আপনার নাম লিখুন" maxlength="30"><button id="jn">ডিলে যুক্ত হন</button>`
-      : '<p>এই ডিলে ইতিমধ্যে ২ জন সদস্য আছেন।</p>';
-  } else h = ACT(r, mm);
-  if ($('#act').dataset.h !== h) { $('#act').innerHTML = h; $('#act').dataset.h = h; }
+  $('#info').innerHTML = `
+    <div class="row" style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+      <b>ডিল #${esc(r.id)}</b>
+      <span class="chip">${STEP[r.step]}</span>
+    </div>
+    <div style="margin-top:8px;font-size:13px;color:var(--muted)">
+      ${r.members.map(x => x.role ? `${AV[x.role]} ${LBL[x.role]}` : '👤 সদস্য').join(' &nbsp;•&nbsp; ') || 'এখনো কেউ যুক্ত হননি'}
+    </div>
+    ${r.amount ? `<div style="margin-top:6px;font-size:14px">পরিমাণ <b>৳${r.amount}</b> &nbsp;|&nbsp; মোট ৳${r.total}</div>` : ''}
+    <div class="meta">লিংক শেয়ার করুন: ${esc(location.href)}</div>
+    <button class="btn ghost" style="margin-top:8px" id="copy">লিংক কপি করুন</button>`;
+
+  const chat = $('#chat');
+  const atBottom = chat.scrollTop + chat.clientHeight >= chat.scrollHeight - 60;
+  if (r.messages.length !== lastCount) {
+    chat.innerHTML = r.messages.map(m => msgHTML(m, myRole)).join('');
+    lastCount = r.messages.length;
+    if (atBottom || lastCount <= 1) chat.scrollTop = chat.scrollHeight;
+  }
+
+  const canType = !!myRole && MANUAL.includes(r.step);
+  $('#composer').classList.toggle('hide', !canType);
+
+  const h = mem && !me && r.members.length >= 2 ? '<p>এই ডিলে ইতিমধ্যে ২ জন আছেন।</p>' : ACT(r, me);
+  const panel = $('#panel');
+  if (panelHTML !== h) { panel.innerHTML = h; panelHTML = h; }
+  if (!me && r.members.length < 2 && !panel.querySelector('#join')) { /* join button in ACT */ }
 }
 
-function ACT(r, mm) {
-  const isB = mm.role === 'buyer';
+function msgHTML(m, myRole) {
+  if (m.who === 'sys') return `<div class="center"><span class="sys">${esc(m.text)}</span></div>`;
+  const mine = m.who === myRole;
+  return `<div class="msg ${m.who} ${mine ? 'me' : ''}">
+    <div class="av ${m.who}">${AV[m.who] || '•'}</div>
+    <div class="bub">
+      <div class="lbl">${LBL[m.who]}</div>
+      <div class="txt">${esc(m.text)}</div>
+      <div class="tm">${timeStr(m.t)}</div>
+    </div></div>`;
+}
+
+function ACT(r, me) {
+  if (!me) {
+    return r.members.length < 2
+      ? `<h2>ডিলে যোগ দিন</h2><p>যোগ দিলে আপনি সদস্য হিসেবে যুক্ত হবেন।</p><button class="btn block" id="join" data-a="join">ডিলে যোগ দিন</button>`
+      : '<p>এই ডিলে ইতিমধ্যে ২ জন সদস্য আছেন।</p>';
+  }
+  const role = me.role;
   switch (r.step) {
-    case 'join': return '<p>অপেক্ষা করুন, আরেকজন যুক্ত হলে ভূমিকা বাছাই শুরু হবে।</p>';
-    case 'roles': return mm.role
+    case 'join': return '<p>অপেক্ষা করুন, আরেকজন যুক্ত হলে পরের ধাপ শুরু হবে।</p>';
+    case 'roles': return role
       ? '<p>অন্যজনের ভূমিকা বাছাইয়ের অপেক্ষা...</p>'
-      : `<button data-a="role" data-v="buyer">আমি ক্রেতা</button><button class="alt" data-a="role" data-v="seller">আমি বিক্রেতা</button>`;
-    case 'amount': return isB
-      ? `<input id="amt" type="number" min="1" placeholder="ডিলের পরিমাণ (টাকা)"><button data-a="amount">নিশ্চিত করুন</button>`
-      : '<p>ক্রেতা ডিলের পরিমাণ লিখছেন...</p>';
-    case 'pay': return isB
-      ? `<p>উপরের নম্বরে টাকা পাঠিয়ে নিচের বাটনে ক্লিক করুন।</p><button data-a="sent">✅ টাকা পাঠিয়েছি</button>`
-      : '<p>ক্রেতার পেমেন্টের অপেক্ষা।</p>';
-    case 'verify': return '<p>অ্যাডমিন পেমেন্ট যাচাই করছেন। একটু অপেক্ষা করুন।</p>';
-    case 'deliver': return isB
-      ? `<button data-a="received">📦 পণ্য/সেবা পেয়েছি</button>`
+      : `<h2>আপনি কে?</h2><button class="btn buyer block" data-a="role" data-v="buyer">🛒 আমি ক্রেতা</button>
+         <button class="btn seller block" data-a="role" data-v="seller">🏪 আমি বিক্রেতা</button>`;
+    case 'amount': return role === 'seller'
+      ? `<h2>ডিলের পরিমাণ</h2><input id="amt" type="number" min="1" placeholder="টাকার পরিমাণ লিখুন">
+         <button class="btn seller block" data-a="amount">নিশ্চিত করুন</button>`
+      : '<p>বিক্রেতা ডিলের পরিমাণ লিখছেন...</p>';
+    case 'pay': {
+      if (role !== 'buyer') return '<p>ক্রেতার পেমেন্টের অপেক্ষা।</p>';
+      if (!r.method) {
+        const list = (S_METHODS || []).map((x, i) => `<button class="btn buyer" data-a="method" data-v="${i}">${esc(x.name)}</button>`).join('');
+        return `<h2>পেমেন্ট মাধ্যম</h2><div class="row">${list}</div>`;
+      }
+      return `<button class="btn buyer block" data-a="sent">✅ টাকা পাঠিয়েছি</button>`;
+    }
+    case 'verify': return role === 'buyer' ? '<p>অ্যাডমিন পেমেন্ট যাচাই করছেন। একটু অপেক্ষা করুন।</p>' : '<p>অ্যাডমিন পেমেন্ট যাচাই করছেন।</p>';
+    case 'deliver': return role === 'buyer'
+      ? `<button class="btn buyer block" data-a="received">📦 পণ্য/সেবা পেয়েছি</button>`
       : '<p>ক্রেতার নিশ্চিতকরণের অপেক্ষা।</p>';
     case 'release': return '<p>অ্যাডমিন বিক্রেতাকে টাকা পাঠাচ্ছেন। 💸</p>';
     default: return '<p>✅ ডিল সম্পন্ন হয়েছে। ধন্যবাদ।</p>';
   }
 }
 
+let SETTINGS = null;
 document.addEventListener('click', async e => {
   const b = e.target.closest('button');
-  if (!b || !roomId) return;
+  if (!b) return;
   try {
-    if (b.id === 'jn') {
-      const name = $('#nm').value.trim();
-      if (!name) return alert('নাম লিখুন');
-      const d = await api(`room/${roomId}/join`, { method: 'POST', body: { name } });
-      me = d.member;
-      localStorage.setItem('mem_' + roomId, JSON.stringify(me));
-    } else if (b.dataset.a) {
+    if (b.id === 'copy') { await navigator.clipboard.writeText(location.href); toast('লিংক কপি হয়েছে'); return; }
+    if (b.id === 'send') {
+      const text = $('#txt').value.trim();
+      if (!text) return;
+      await api(`room/${roomId}/msg`, { method: 'POST', body: { memberId: mem.id, text } });
+      $('#txt').value = '';
+      return poll();
+    }
+    if (!b.dataset.a) return;
+    if (b.dataset.a === 'join') {
+      const d = await api(`room/${roomId}/join`, { method: 'POST', body: {} });
+      mem = d.member;
+      localStorage.setItem('mem_' + roomId, JSON.stringify(mem));
+    } else {
       let value = b.dataset.v;
       if (b.dataset.a === 'amount') {
         value = $('#amt').value;
-        if (!value) return alert('পরিমাণ লিখুন');
+        if (!value) return toast('পরিমাণ লিখুন');
       }
-      await api(`room/${roomId}/action`, { method: 'POST', body: { memberId: me.id, action: b.dataset.a, value } });
-    } else return;
+      await api(`room/${roomId}/action`, { method: 'POST', body: { memberId: mem.id, action: b.dataset.a, value } });
+    }
     await poll();
-  } catch (err) { alert(err.message); }
+  } catch (err) { toast(err.message); }
 });
 
-roomId ? room() : home();
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.id === 'txt') $('#send').click();
+});
+
+async function init() {
+  try { SETTINGS = await api('settings'); } catch {}
+  if (SETTINGS) S_METHODS = SETTINGS.methods;
+  roomId ? room() : home();
+}
+let S_METHODS = [];
+init();
 </script>
+</body>
 </html>
