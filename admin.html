@@ -1,60 +1,63 @@
 <!doctype html>
-<html lang="en">
+<html lang="bn">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Admin Panel – Admin Deal</title>
+<title>Admin Panel · Admin Deal</title>
+<link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--indigo:#4f46e5;--violet:#7c3aed;--sky:#0ea5e9;--buyer:#2563eb;--seller:#10b981;--admin:#8b5cf6;--bot:#64748b;--bad:#ef4444;--ok:#10b981;--warn:#f59e0b;--bg:#f4f6fb;--line:#e2e8f0;--muted:#64748b;--font:'Inter','Noto Sans Bengali',system-ui,sans-serif}
+:root{--navy:#0b2e59;--navy2:#1e4d8c;--teal:#0d9488;--teal2:#14b8a6;--buyer:#2563eb;--seller:#059669;--admin:#7c3aed;--bad:#dc2626;--warn:#d97706;--bg:#f3f6fb;--line:#e4e9f2;--muted:#64748b;--font:'Inter','Noto Sans Bengali',system-ui,sans-serif}
 *{box-sizing:border-box}
 body{margin:0;font-family:var(--font);background:var(--bg);color:#0f172a;font-size:14.5px;line-height:1.5}
-.appbar{position:sticky;top:0;z-index:10;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 16px;background:linear-gradient(90deg,#1e1b4b,#312e81);color:#fff}
-.appbar b{font-size:17px;letter-spacing:-.2px}
-.appbar .who{font-size:12px;background:rgba(255,255,255,.15);padding:4px 10px;border-radius:99px}
-.wrap{max-width:980px;margin:0 auto;padding:16px}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 6px 20px rgba(15,23,42,.05);margin-bottom:14px}
-h2{margin:0 0 8px;font-size:18px}
-h3{margin:14px 0 6px;font-size:14px}
+.appbar{position:sticky;top:0;z-index:10;height:58px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:linear-gradient(90deg,#0b2e59,#1e4d8c);color:#fff}
+.appbar b{font-size:16.5px;letter-spacing:-.2px}
+.appbar .who{font-size:12px;background:rgba(255,255,255,.16);padding:4px 10px;border-radius:99px}
+.wrap{max-width:1000px;margin:0 auto;padding:18px 16px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 6px 20px rgba(15,23,42,.04);margin-bottom:14px}
+h2{margin:0 0 8px;font-size:17px;color:var(--navy)}
 .muted{color:var(--muted);font-size:12.5px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
 .tab{border:1px solid var(--line);background:#fff;padding:9px 14px;border-radius:12px;font:600 13.5px var(--font);cursor:pointer;color:#334155}
-.tab.on{background:linear-gradient(135deg,var(--indigo),var(--violet));color:#fff;border-color:transparent}
+.tab.on{background:linear-gradient(135deg,var(--navy2),var(--navy));color:#fff;border-color:transparent}
 .tab .n{display:inline-block;min-width:18px;padding:0 6px;border-radius:99px;background:var(--bad);color:#fff;font-size:11px;margin-left:4px}
-.btn{border:0;border-radius:10px;padding:9px 14px;font:600 13.5px var(--font);cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--violet));margin:3px 4px 3px 0}
+.btn{border:0;border-radius:10px;padding:9px 14px;font:600 13.5px var(--font);cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--navy2),var(--navy));margin:3px 4px 3px 0}
 .btn.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer))}
 .btn.seller{background:linear-gradient(135deg,#34d399,var(--seller))}
 .btn.bad{background:linear-gradient(135deg,#f87171,var(--bad))}
+.btn.teal{background:linear-gradient(135deg,var(--teal2),var(--teal))}
 .btn.ghost{background:#eef2f7;color:#0f172a}
 .btn.block{width:100%}
-input,textarea{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:10px;font:14px var(--font);background:#fff;margin:4px 0 10px}
+input,textarea{width:100%;padding:11px 12px;border:1px solid #cdd6e3;border-radius:10px;font:14px var(--font);background:#fff;margin:4px 0 10px}
 textarea{min-height:64px;resize:vertical}
-label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
-.deal-item{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:12px;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer;background:#fff}
+label{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.3px}
+.deal-item{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;padding:13px;border:1px solid var(--line);border-radius:14px;margin-bottom:8px;cursor:pointer;background:#fff}
 .deal-item:hover{border-color:#a5b4fc}
-.chip{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:#eef2ff;color:var(--indigo)}
+.chip{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:#e6f0ff;color:var(--navy2)}
 .chip.warn{background:#fef3c7;color:#b45309}.chip.ok{background:#d1fae5;color:#047857}.chip.bad{background:#fee2e2;color:#b91c1c}
-.chat{height:52vh;min-height:260px;overflow-y:auto;padding:12px;background:#eef2fb;border-radius:14px;border:1px solid var(--line)}
-.msg{display:flex;gap:8px;margin:8px 0;align-items:flex-end}
+.chat{height:52vh;min-height:260px;overflow-y:auto;padding:12px;background:#eef3f9;border-radius:14px;border:1px solid var(--line)}
+.msg{display:flex;gap:8px;margin:10px 0;align-items:flex-end}
 .msg.me{flex-direction:row-reverse}
-.av{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-size:14px;color:#fff;flex:none}
-.av.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer))}.av.seller{background:linear-gradient(135deg,#34d399,var(--seller))}
-.av.admin{background:linear-gradient(135deg,#a78bfa,var(--admin))}.av.bot{background:linear-gradient(135deg,#94a3b8,var(--bot))}
+.av{width:30px;height:30px;border-radius:50%;flex:none;display:block;object-fit:cover;background:#e4e9f2}
+.av.admin{display:grid;place-items:center;background:linear-gradient(135deg,#a78bfa,var(--admin));font-size:14px;color:#fff}
+.av.bot{background:#fff;padding:2px}
 .bub{max-width:76%}
 .lbl{font-size:11px;color:var(--muted);margin:0 6px 2px;font-weight:600}
 .msg.me .lbl{text-align:right}
 .txt{padding:9px 12px;border-radius:16px;color:#fff;white-space:pre-wrap;word-break:break-word}
-.msg.buyer .txt{background:linear-gradient(135deg,#3b82f6,var(--buyer))}.msg.seller .txt{background:linear-gradient(135deg,#34d399,var(--seller))}
-.msg.admin .txt{background:linear-gradient(135deg,#a78bfa,var(--admin))}.msg.bot .txt{background:linear-gradient(135deg,#94a3b8,var(--bot))}
+.msg.buyer .txt{background:linear-gradient(135deg,#3b82f6,var(--buyer))}
+.msg.seller .txt{background:linear-gradient(135deg,#34d399,var(--seller))}
+.msg.admin .txt{background:linear-gradient(135deg,#a78bfa,var(--admin))}
+.msg.bot .txt{background:#fff;color:#0f172a;border:1px solid #d5ece9;border-left:3px solid var(--teal2)}
 .sysline{text-align:center;margin:10px 0;font-size:12px;color:#475569}
-.sysline span{background:#dbe3ef;padding:3px 10px;border-radius:99px}
+.sysline span{background:#dfe7f1;padding:3px 10px;border-radius:99px}
 .composer{display:flex;gap:8px;margin-top:10px}
 .composer input{margin:0;border-radius:99px}
 .stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px}
 .stat-grid div{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px}
-.stat-grid b{display:block;font-size:20px}
+.stat-grid b{display:block;font-size:20px;color:var(--navy)}
 .stat-grid span{font-size:12px;color:var(--muted)}
 .row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -62,6 +65,7 @@ label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase
 .login{max-width:380px;margin:60px auto}
 .unread{border-left:4px solid var(--warn)}
 .hidden{display:none!important}
+.section-title{font-weight:800;color:var(--navy);margin:4px 0 10px;font-size:15px}
 @media (max-width:720px){.stat-grid{grid-template-columns:repeat(2,1fr)}.grid2{grid-template-columns:1fr}.chat{height:46vh}.bub{max-width:82%}}
 </style>
 </head>
@@ -74,18 +78,19 @@ label{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const toast = t => { const el = $('#toast'); el.textContent = t; el.style.display = 'block'; clearTimeout(toast.h); toast.h = setTimeout(() => el.style.display = 'none', 2300); };
-const dt = t => new Date(t).toLocaleString('en-US', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+const dt = t => new Date(t).toLocaleString('en-GB', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
 
 const LBL = { buyer: 'Buyer', seller: 'Seller', admin: 'Admin', bot: 'Bot' };
-const AV = { buyer: '🛒', seller: '🏪', admin: '🛡️', bot: '🤖' };
 const STEP = {
-  join: 'Waiting for members', roles: 'Choosing roles', amount: 'Waiting for amount', pay: 'Waiting for payment',
+  join: 'Waiting for members', amount: 'Waiting for amount', pay: 'Waiting for payment',
   verify: '⚠️ Verify payment', deliver: 'Waiting for delivery confirmation', release: '⚠️ Pay the seller', done: 'Completed'
 };
 const STATUS_CHIP = { active: 'warn', done: 'ok', cancelled: 'bad' };
 const TEXT_KEYS = [
-  ['welcome', 'Deal created'], ['roles', 'Roles prompt'], ['amount', 'Amount prompt'],
-  ['pay', 'Payment instructions  — placeholders: {amount} {fee} {feeAmt} {total}'],
+  ['welcome', 'Deal created'],
+  ['joined', 'Both joined — placeholders: {buyer} {seller}'],
+  ['amount', 'Amount prompt'],
+  ['pay', 'Payment instructions — placeholders: {amount} {fee} {feeAmt} {total}'],
   ['payDetail', 'Payment number message — placeholders: {method} {number} {total}'],
   ['sent', 'Buyer says sent'], ['verified', 'Payment received'], ['notPaid', 'Payment not received'],
   ['received', 'Delivery confirmed'], ['done', 'Deal completed'], ['cancelled', 'Deal cancelled']
@@ -106,7 +111,7 @@ async function api(p, o = {}) {
 }
 
 function loginView() {
-  $('#app').innerHTML = `<div class="card login"><h2>Admin sign in</h2>
+  $('#app').innerHTML = `<div class="card login"><h2>Admin sign in · অ্যাডমিন লগইন</h2>
     <label>Admin password</label><input id="pw" type="password" autocomplete="current-password">
     <button class="btn block" id="lg">Enter</button></div>`;
   const go = async () => {
@@ -161,10 +166,16 @@ async function show() {
         <div><b>${rs.filter(r => r.status === 'active').length}</b><span>In progress</span></div>
         <div><b>${rs.filter(r => r.status === 'done').length}</b><span>Completed</span></div>
         <div><b>${rs.filter(r => r.step === 'verify' || r.step === 'release').length}</b><span>Need action</span></div></div>`;
-      v.innerHTML = stats + (rs.map(r => `<div class="deal-item" data-open="${esc(r.id)}">
+      v.innerHTML = stats + (rs.map(r => {
+        const buyer = (r.members || []).find(x => x.role === 'buyer');
+        const seller = (r.members || []).find(x => x.role === 'seller');
+        const who = `ক্রেতা: ${esc(buyer ? buyer.name || '—' : '—')} · বিক্রেতা: ${esc(seller ? seller.name || '—' : '—')}`;
+        return `<div class="deal-item" data-open="${esc(r.id)}">
           <div><b>Deal #${esc(r.id)}</b> <span class="chip ${STATUS_CHIP[r.status]}">${r.status}</span>
+          <div class="muted">${who}</div>
           <div class="muted">${STEP[r.step]} · ${r.amount ? '৳' + r.amount : 'no amount'} · ${dt(r.t)}</div></div>
-          <span class="chip">Open →</span></div>`).join('') || '<div class="card">No deals yet.</div>');
+          <span class="chip">Open →</span></div>`;
+      }).join('') || '<div class="card">No deals yet.</div>');
     }
     else if (tab === 'reports') {
       const list = await api('admin/reports');
@@ -191,7 +202,7 @@ async function settingsView() {
   const s = await api('settings');
   $('#view').innerHTML = `
     <div class="card">
-      <h2>Fee and payment methods</h2>
+      <h2>Fee, login and payment methods · ফি ও পেমেন্ট</h2>
       <div class="grid2">
         <div><label>Service fee (%)</label><input id="fee" type="number" step="0.1" min="0" value="${s.feePercent}"></div>
         <div><label>Google Client ID (optional)</label><input id="gid" value="${esc(s.googleClientId)}" placeholder="xxxx.apps.googleusercontent.com"></div>
@@ -204,11 +215,19 @@ async function settingsView() {
       <textarea id="methods" style="min-height:96px">${esc(s.methods.map(x => `${x.name} | ${x.number}`).join('\n'))}</textarea>
     </div>
     <div class="card">
-      <h2>Bot messages (Bangla)</h2>
-      <p class="muted">The bot speaks Bangla. These texts appear in the chat at each step.</p>
+      <h2>Support links · সাপোর্ট লিংক</h2>
+      <p class="muted">Support বাটনে এই লিংকগুলো দেখাবে। WhatsApp-এ শুধু নম্বর দিন (যেমন 8801XXXXXXXXX), Telegram-এ @username দিন বা পুরো লিংক দিন।</p>
+      <div class="grid2">
+        <div><label>WhatsApp (number or link)</label><input id="swa" value="${esc(s.supportWhatsapp)}" placeholder="8801XXXXXXXXX"></div>
+        <div><label>Telegram (@username or link)</label><input id="stg" value="${esc(s.supportTelegram)}" placeholder="@yourusername"></div>
+      </div>
+    </div>
+    <div class="card">
+      <h2>Bot messages · বটের মেসেজ (Bangla)</h2>
+      <p class="muted">বট এই টেক্সটগুলো প্রতিটি ধাপে চ্যাটে পাঠায়।</p>
       ${TEXT_KEYS.map(([k, l]) => `<label>${esc(l)}</label><textarea data-tk="${k}">${esc(s.texts[k])}</textarea>`).join('')}
     </div>
-    <button class="btn block" id="sv">Save all settings</button>`;
+    <button class="btn block" id="sv">Save all settings · সব সেভ করুন</button>`;
 }
 
 async function roomView(id) {
@@ -226,20 +245,27 @@ async function roomView(id) {
     }
     const body = r.messages.map(m => {
       if (m.who === 'sys') return `<div class="sysline"><span>${esc(m.text)}</span></div>`;
-      return `<div class="msg ${m.who} ${m.who === 'admin' ? 'me' : ''}">
-        <div class="av ${m.who}">${AV[m.who] || '•'}</div>
-        <div class="bub"><div class="lbl">${LBL[m.who]}</div><div class="txt">${esc(m.text)}</div></div></div>`;
+      const isBot = m.who === 'bot', isAdm = m.who === 'admin';
+      const label = isBot ? 'Escrow Bot' : isAdm ? 'Admin' : `${esc(m.name || LBL[m.who])} (${LBL[m.who]})`;
+      const av = isBot ? `<img class="av bot" src="/assets/bot.svg" alt="">`
+        : isAdm ? `<span class="av admin">🛡️</span>`
+        : `<img class="av" src="/assets/avatar.svg" alt="">`;
+      return `<div class="msg ${m.who} ${isAdm ? 'me' : ''}">${av}
+        <div class="bub"><div class="lbl">${label}</div><div class="txt">${esc(m.text)}</div></div></div>`;
     }).join('');
+    const buyer = (r.members || []).find(x => x.role === 'buyer');
+    const seller = (r.members || []).find(x => x.role === 'seller');
+    const people = `<div class="muted">ক্রেতা: ${esc(buyer ? buyer.name || '—' : '—')} · বিক্রেতা: ${esc(seller ? seller.name || '—' : '—')}</div>`;
     const info = r.amount ? `<div class="muted">Amount ৳${r.amount} · Fee ৳${r.fee} · Buyer pays ৳${r.total}${r.method ? ' · ' + esc(r.method.name) + ' ' + esc(r.method.number) : ''}</div>` : '';
     $('#view').innerHTML = `<div class="card">
       <div class="row" style="justify-content:space-between"><button class="btn ghost" data-back="1">← Back</button>
       <span class="chip ${STATUS_CHIP[r.status]}">${r.status}</span></div>
       <div class="row" style="margin-top:8px"><button class="btn ghost" data-copylink="1">🔗 Copy deal link</button></div>
       <h2 style="margin-top:10px">Deal #${esc(r.id)} · ${STEP[r.step]}</h2>
-      ${info}
-      <div class="chat" id="chat">${body}</div>
+      ${people}${info}
+      <div class="chat" id="chat" style="margin-top:10px">${body}</div>
       <div class="row" style="margin-top:10px">${acts}</div>
-      ${ended ? '' : `<div class="composer"><input id="ms" placeholder="Message as Admin…"><button class="btn" data-ra="msg">Send</button></div>`}
+      ${ended ? '' : `<div class="composer"><input id="ms" placeholder="Message as Admin… · অ্যাডমিন হিসেবে মেসেজ"><button class="btn" data-ra="msg">Send</button></div>`}
     </div>`;
     if ($('#ms')) $('#ms').value = keep;
     $('#chat').scrollTop = $('#chat').scrollHeight;
@@ -276,7 +302,8 @@ document.addEventListener('click', async e => {
       document.querySelectorAll('[data-tk]').forEach(t => texts[t.dataset.tk] = t.value);
       await api('admin/settings', { method: 'POST', body: {
         feePercent: Number($('#fee').value), googleClientId: $('#gid').value,
-        fbAppId: $('#fbid').value, methods, texts
+        fbAppId: $('#fbid').value, supportWhatsapp: $('#swa').value, supportTelegram: $('#stg').value,
+        methods, texts
       } });
       return toast('Settings saved');
     }
