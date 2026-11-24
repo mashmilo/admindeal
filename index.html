@@ -1,11 +1,15 @@
 <!doctype html>
-<html lang="bn">
+<html lang="bn" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b2e59">
+<meta name="theme-color" content="#0b1220" id="themeMeta">
 <meta name="description" content="Admin Deal — admin-verified escrow for buyers and sellers. অ্যাডমিন যাচাইকৃত নিরাপদ লেনদেন।">
 <title>Admin Deal · নিরাপদ এসক্রো</title>
+<script>
+(function(){var t='dark';try{t=localStorage.getItem('ad_theme')||'dark'}catch(e){}
+document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark');})();
+</script>
 <link rel="icon" href="/assets/logo.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,8 +20,42 @@
   --buyer:#2563eb;--seller:#059669;--admin:#7c3aed;
   --bad:#dc2626;
   --bg:#f3f6fb;--card:#fff;--text:#0f172a;--muted:#64748b;--line:#e4e9f2;
+  --soft:#f8fafc;--soft2:#eef2f7;--soft3:#e2e8f0;--chatbg:#eef3f9;--inbg:#fff;--inline:#cdd6e3;
+  --bar:rgba(255,255,255,.94);--sysbg:#dfe7f1;--syscol:#475569;--accent:#e6f0ff;--accent2:#e6f2ff;--selbg:#f0f6ff;--grab:#cbd5e1;
+  --banner:#eef5ff;--bannerline:#cfe2ff;--botline:#d5ece9;--shadow:rgba(15,23,42,.04);
   --font:'Inter','Noto Sans Bengali',system-ui,-apple-system,sans-serif;
 }
+
+html[data-theme="dark"]{
+  color-scheme:dark;
+  --navy:#9ec5ff;--navy2:#3b6fb8;
+  --bg:#0b1220;--card:#131c2e;--text:#e6ebf5;--muted:#93a1b8;--line:#243049;
+  --soft:#18233a;--soft2:#1b2740;--soft3:#26344f;--chatbg:#0e1628;--inbg:#0f1829;--inline:#2d3b58;
+  --bar:rgba(19,28,46,.94);--sysbg:#223048;--syscol:#b6c2d6;--accent:#1b2f55;--accent2:#1b2f55;--selbg:#182a4a;--grab:#3a4a68;
+  --banner:#14264a;--bannerline:#274575;--botline:#1f4a4a;--shadow:rgba(0,0,0,.25);
+}
+html[data-theme="dark"] .btn{background:linear-gradient(135deg,#2f5fa8,#1e4d8c)}
+html[data-theme="dark"] .btn.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer))}
+html[data-theme="dark"] .btn.seller{background:linear-gradient(135deg,#34d399,var(--seller))}
+html[data-theme="dark"] .btn.teal{background:linear-gradient(135deg,var(--teal2),var(--teal))}
+html[data-theme="dark"] .btn.fb{background:#1877f2}
+html[data-theme="dark"] .btn.ghost{background:var(--soft2);color:var(--text)}
+html[data-theme="dark"] .logo{color:#e6ebf5}
+html[data-theme="dark"] h2,html[data-theme="dark"] .rolebtn b{color:#e6ebf5}
+html[data-theme="dark"] .badge{background:#1b2f55;color:#9ec5ff}
+html[data-theme="dark"] .badge.done,html[data-theme="dark"] .pill.ok{background:#064e3b;color:#6ee7b7}
+html[data-theme="dark"] .badge.cancelled,html[data-theme="dark"] .pill.bad{background:#4c1d1d;color:#fca5a5}
+html[data-theme="dark"] .pill,html[data-theme="dark"] .you{background:#1b2f55;color:#9ec5ff}
+html[data-theme="dark"] .step .n{color:#9ec5ff}
+html[data-theme="dark"] .checks li:before{background:#064e3b;color:#6ee7b7}
+html[data-theme="dark"] .banner.share{background:#08302b;border-color:#14584f}
+html[data-theme="dark"] .msg.bot .txt{background:#18233a;color:var(--text)}
+html[data-theme="dark"] .toast{background:#e6ebf5;color:#0b1220}
+html[data-theme="dark"] .avatar-btn{border-color:var(--card)}
+html[data-theme="dark"] .av{border-color:var(--card)}
+html[data-theme="dark"] .av.bot{background:#fff}
+html[data-theme="dark"] .overlay{background:rgba(0,0,0,.6)}
+.theme-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:var(--soft2);color:var(--text);cursor:pointer;font-size:17px;display:grid;place-items:center;padding:0;flex:none}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0;height:100%}
@@ -26,13 +64,13 @@ button,input,textarea{font-family:inherit}
 a{color:inherit}
 
 /* App bar */
-.appbar{position:sticky;top:0;z-index:20;height:58px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 16px;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.appbar{position:sticky;top:0;z-index:20;height:58px;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:0 16px;background:var(--bar);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--navy)}
 .logo img{width:32px;height:32px}
 .logo b{display:block;font-size:17px;font-weight:800;letter-spacing:-.2px;line-height:1.1}
 .logo small{display:block;font-size:11px;font-weight:600;color:var(--muted)}
 .bar-actions{display:flex;align-items:center;gap:8px}
-.avatar-btn{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px var(--navy2);overflow:hidden;background:#e4e9f2;cursor:pointer;padding:0}
+.avatar-btn{width:36px;height:36px;border-radius:50%;border:2px solid var(--card);box-shadow:0 0 0 2px var(--navy2);overflow:hidden;background:var(--soft3);cursor:pointer;padding:0}
 .avatar-btn img{width:100%;height:100%;object-fit:cover;display:block}
 
 /* Buttons */
@@ -43,8 +81,8 @@ a{color:inherit}
 .btn.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer));box-shadow:0 4px 14px rgba(37,99,235,.25)}
 .btn.seller{background:linear-gradient(135deg,#34d399,var(--seller));box-shadow:0 4px 14px rgba(5,150,105,.25)}
 .btn.teal{background:linear-gradient(135deg,var(--teal2),var(--teal));box-shadow:0 4px 14px rgba(13,148,136,.25)}
-.btn.ghost{background:#eef2f7;color:var(--text);box-shadow:none}
-.btn.light{background:#fff;color:var(--navy);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+.btn.ghost{background:var(--soft2);color:var(--text);box-shadow:none}
+.btn.light{background:#fff;color:#0b2e59;box-shadow:0 8px 20px rgba(0,0,0,.15)}
 .btn.ghostlight{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.3);box-shadow:none}
 .btn.fb{background:#1877f2;box-shadow:none}
 .btn.sm{padding:8px 13px;font-size:13px;border-radius:10px}
@@ -53,7 +91,7 @@ a{color:inherit}
 
 /* Shared */
 .wrap{max-width:900px;margin:0 auto;padding:18px 16px 40px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 6px 20px rgba(15,23,42,.04)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 6px 20px var(--shadow)}
 h2{margin:0 0 6px;font-size:20px;letter-spacing:-.3px;color:var(--navy)}
 h3{margin:0 0 4px;font-size:15.5px}
 p{margin:6px 0;color:var(--muted)}
@@ -63,7 +101,7 @@ p{margin:6px 0;color:var(--muted)}
 .row.wrap{flex-wrap:wrap}
 .grow{flex:1;min-width:0}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-input,textarea{width:100%;padding:13px 14px;border:1px solid #cdd6e3;border-radius:12px;font:15px var(--font);background:#fff;outline:none;color:var(--text)}
+input,textarea{width:100%;padding:13px 14px;border:1px solid var(--inline);border-radius:12px;font:15px var(--font);background:var(--inbg);outline:none;color:var(--text)}
 input:focus,textarea:focus{border-color:var(--navy2);box-shadow:0 0 0 3px rgba(30,77,140,.14)}
 textarea{min-height:90px;resize:vertical}
 
@@ -78,7 +116,7 @@ textarea{min-height:90px;resize:vertical}
 @keyframes bob{50%{transform:translateY(-8px)}}
 .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
 .step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
-.step .n{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:#e6f2ff;color:var(--navy2);font-weight:800;margin-bottom:10px}
+.step .n{display:grid;place-items:center;width:30px;height:30px;border-radius:10px;background:var(--accent2);color:var(--navy2);font-weight:800;margin-bottom:10px}
 .step h3{font-size:14.5px}
 .step p{font-size:13px;margin:0}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -91,31 +129,31 @@ textarea{min-height:90px;resize:vertical}
 /* Deal room */
 .deal{max-width:760px;margin:0 auto;background:var(--card);height:calc(100vh - 58px);height:calc(100dvh - 58px);display:flex;flex-direction:column;box-shadow:0 0 0 1px var(--line)}
 .deal-head{display:flex;align-items:center;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
-.icon-btn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#eef2f7;text-decoration:none;color:var(--text);font-size:17px;flex:none;border:0;cursor:pointer}
-.icon-btn:hover{background:#e2e8f0}
+.icon-btn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:var(--soft2);text-decoration:none;color:var(--text);font-size:17px;flex:none;border:0;cursor:pointer}
+.icon-btn:hover{background:var(--soft3)}
 .dtitle{font-weight:700;font-size:15.5px}
 .dsub{font-size:12.5px;color:var(--muted)}
-.pill{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:#e6f0ff;color:var(--navy2);white-space:nowrap}
+.pill{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:var(--accent);color:var(--navy2);white-space:nowrap}
 .pill.ok{background:#d1fae5;color:#047857}.pill.bad{background:#fee2e2;color:#b91c1c}
 .progress{height:3px;background:var(--line)}
 .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal2),var(--navy2));transition:width .4s}
 .people{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line)}
-.person{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:14px;background:#f8fafc;border:1px solid var(--line);min-width:0}
+.person{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:14px;background:var(--soft);border:1px solid var(--line);min-width:0}
 .person.link{cursor:pointer}
 .person.empty{opacity:.6;border-style:dashed}
 .pname{font-weight:700;font-size:13.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .psub{font-size:11.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.you{font-size:10.5px;background:#e6f0ff;color:var(--navy2);padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:700}
-.av{width:34px;height:34px;border-radius:50%;flex:none;object-fit:cover;background:#e4e9f2;border:2px solid #fff;display:block}
+.you{font-size:10.5px;background:var(--accent);color:var(--navy2);padding:1px 6px;border-radius:99px;margin-left:4px;font-weight:700}
+.av{width:34px;height:34px;border-radius:50%;flex:none;object-fit:cover;background:var(--soft3);border:2px solid var(--card);display:block}
 .av.lg{width:42px;height:42px}
 .av.buyer{box-shadow:0 0 0 2px var(--buyer)}
 .av.seller{box-shadow:0 0 0 2px var(--seller)}
 .av.bot{background:#fff;box-shadow:0 0 0 2px var(--teal2);padding:2px}
 .av.admin{display:grid;place-items:center;background:linear-gradient(135deg,#a78bfa,var(--admin));font-size:16px;border:0}
-.banner{margin:10px 12px 0;padding:12px 14px;border-radius:14px;background:#eef5ff;border:1px solid #cfe2ff;display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
+.banner{margin:10px 12px 0;padding:12px 14px;border-radius:14px;background:var(--banner);border:1px solid var(--bannerline);display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
 .banner b{font-size:14px}
 .banner.share{background:#ecfdf5;border-color:#a7f3d0}
-.chat{flex:1;min-height:0;overflow-y:auto;padding:14px 12px;background:#eef3f9}
+.chat{flex:1;min-height:0;overflow-y:auto;padding:14px 12px;background:var(--chatbg)}
 .msg{display:flex;gap:8px;margin:12px 0;align-items:flex-end}
 .msg.me{flex-direction:row-reverse}
 .bub{max-width:76%;min-width:0}
@@ -126,48 +164,48 @@ textarea{min-height:90px;resize:vertical}
 .msg.seller .txt{background:linear-gradient(135deg,#34d399,var(--seller))}
 .msg.admin .txt{background:linear-gradient(135deg,#a78bfa,var(--admin))}
 .msg.bot .bub{max-width:82%}
-.msg.bot .txt{background:#fff;color:var(--text);border:1px solid #d5ece9;border-left:3px solid var(--teal2)}
+.msg.bot .txt{background:var(--card);color:var(--text);border:1px solid var(--botline);border-left:3px solid var(--teal2)}
 .msg.me .txt{border-bottom-right-radius:5px}
 .msg:not(.me) .txt{border-bottom-left-radius:5px}
 .tm{font-size:10.5px;color:var(--muted);margin:3px 10px 0}
 .msg.me .tm{text-align:right}
 .sysline{text-align:center;margin:12px 0}
-.sysline span{display:inline-block;font-size:12px;color:#475569;background:#dfe7f1;padding:4px 12px;border-radius:99px}
+.sysline span{display:inline-block;font-size:12px;color:var(--syscol);background:var(--sysbg);padding:4px 12px;border-radius:99px}
 .empty{text-align:center;color:var(--muted);font-size:13.5px;margin-top:36px}
-.actions{padding:12px;border-top:1px solid var(--line);background:#fff}
+.actions{padding:12px;border-top:1px solid var(--line);background:var(--card)}
 .actions:empty{display:none}
 .note{font-size:14px;color:var(--muted);text-align:center;padding:4px 0}
-.composer{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff}
+.composer{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:var(--card)}
 .composer input{border-radius:99px;padding:11px 16px}
 
 /* Sheets */
 .overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-end;justify-content:center;z-index:50}
 .overlay.open{display:flex}
-.sheet{background:#fff;width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;animation:up .22s ease-out}
+.sheet{background:var(--card);color:var(--text);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;animation:up .22s ease-out}
 @keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
 @media (min-width:640px){.overlay{align-items:center}.sheet{border-radius:22px;max-height:85vh}}
-.grab{width:44px;height:5px;border-radius:9px;background:#cbd5e1;margin:-8px auto 14px}
+.grab{width:44px;height:5px;border-radius:9px;background:var(--grab);margin:-8px auto 14px}
 .linkbox{display:flex;gap:8px;align-items:center;margin-top:10px}
-.linkbox input{flex:1;font-size:13px;padding:11px 12px;background:#f8fafc}
+.linkbox input{flex:1;font-size:13px;padding:11px 12px;background:var(--soft)}
 .share-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
-.share-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:14px;background:#f8fafc;border:1px solid var(--line);text-decoration:none;color:var(--text);font:600 12.5px var(--font);cursor:pointer}
+.share-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:14px;background:var(--soft);border:1px solid var(--line);text-decoration:none;color:var(--text);font:600 12.5px var(--font);cursor:pointer}
 .share-btn span{font-size:20px}
 .roles{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
-.rolebtn{border:2px solid var(--line);background:#fff;border-radius:16px;padding:14px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:26px}
+.rolebtn{border:2px solid var(--line);background:var(--card);border-radius:16px;padding:14px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:26px}
 .rolebtn b{font-size:14.5px;color:var(--text)}
 .rolebtn span{font-size:12px;color:var(--muted)}
-.rolebtn.sel{border-color:var(--navy2);background:#f0f6ff;box-shadow:0 0 0 3px rgba(30,77,140,.12)}
+.rolebtn.sel{border-color:var(--navy2);background:var(--selbg);box-shadow:0 0 0 3px rgba(30,77,140,.12)}
 .ph{display:flex;align-items:center;gap:14px;margin-bottom:14px}
-.pav{width:64px;height:64px;border-radius:50%;overflow:hidden;flex:none;background:#e4e9f2}
+.pav{width:64px;height:64px;border-radius:50%;overflow:hidden;flex:none;background:var(--soft3)}
 .pav img{width:100%;height:100%;object-fit:cover;display:block}
 .pn{font-weight:800;font-size:18px}
 .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0 16px}
-.stats div{background:#f8fafc;border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
+.stats div{background:var(--soft);border:1px solid var(--line);border-radius:14px;padding:10px 6px;text-align:center}
 .stats b{display:block;font-size:17px}
 .stats span{font-size:11px;color:var(--muted)}
 .stats .bad b{color:var(--bad)}
 .drow{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:12px 0;border-top:1px solid var(--line)}
-.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:#eef2ff;color:var(--navy2)}
+.badge{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:var(--accent);color:var(--navy2)}
 .badge.done{background:#d1fae5;color:#047857}.badge.cancelled{background:#fee2e2;color:#b91c1c}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;display:none;z-index:99;max-width:90vw;box-shadow:0 10px 30px rgba(0,0,0,.25)}
 
@@ -179,6 +217,7 @@ textarea{min-height:90px;resize:vertical}
 <header class="appbar">
   <a class="logo" href="/"><img src="/assets/logo.svg" alt=""><div><b>Admin Deal</b><small>Secure escrow · নিরাপদ এসক্রো</small></div></a>
   <div class="bar-actions">
+    <button class="theme-btn" id="themeBtn" aria-label="Theme" title="Dark / Light"></button>
     <button class="btn ghost sm" data-support="1">💬 Support</button>
     <div id="authBox"></div>
   </div>
@@ -207,11 +246,30 @@ const STATUS = { active: 'চলছে · In progress', done: 'সম্পন�
 const MANUAL = ['verify', 'deliver', 'release', 'done'];
 const HUMAN = '/assets/avatar.svg', BOT = '/assets/bot.svg';
 
+
+/* ---------- Theme (default: dark) ---------- */
+function getTheme() { return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark'; }
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  try { localStorage.setItem('ad_theme', t); } catch {}
+  const b = $('#themeBtn'); if (b) b.textContent = t === 'dark' ? '☀️' : '🌙';
+  const m = $('#themeMeta'); if (m) m.content = t === 'dark' ? '#0b1220' : '#ffffff';
+}
+applyTheme(getTheme());
+
+/* storage that never throws (private/in-app browsers) */
+const store = {
+  get(k) { try { return localStorage.getItem(k) || ''; } catch { return window.__mem && window.__mem[k] || ''; } },
+  set(k, v) { try { localStorage.setItem(k, v); } catch { (window.__mem = window.__mem || {})[k] = v; } },
+  del(k) { try { localStorage.removeItem(k); } catch { if (window.__mem) delete window.__mem[k]; } }
+};
+
 const roomId = new URLSearchParams(location.search).get('room');
-let session = localStorage.getItem('ad_session') || '';
+let session = store.get('ad_session');
 let ME = null, SET = { methods: [], googleClientId: '', fbAppId: '', supportWhatsapp: '', supportTelegram: '' };
-let S = null, memberId = roomId ? (localStorage.getItem('mem_' + roomId) || '') : '';
-let lastMsgCount = -1, lastStep = null, lastPanel = '', lastBanner = '', lastPeople = '', pollErr = '', justSent = false, joinRole = '';
+let S = null, memberId = roomId ? store.get('mem_' + roomId) : '';
+let pollSeq = 0, joined = false;
+let lastMsgCount = -1, lastStep = null, lastPanel = '', lastBanner = '', pollErr = '', justSent = false, joinRole = '';
 
 const shareUrl = () => location.origin + '/?room=' + roomId;
 
@@ -293,11 +351,11 @@ function dealShell() {
       <a class="icon-btn" href="/" aria-label="Back">←</a>
       <div class="grow"><div class="dtitle">ডিল #${esc(roomId)}</div><div class="dsub" id="dsub">লোড হচ্ছে… · Loading</div></div>
       <span class="pill" id="pill"></span>
+      <button class="icon-btn" id="reportBtn" title="রিপোর্ট · Report" hidden>⚠</button>
       <button class="icon-btn" data-support="1" title="Support">💬</button>
       <button class="icon-btn" id="shareIcon" data-share="1" title="লিংক শেয়ার · Share link" hidden>🔗</button>
     </header>
     <div class="progress"><i id="prog"></i></div>
-    <section class="people" id="people"></section>
     <div id="banner"></div>
     <div class="chat" id="chat"></div>
     <div class="actions" id="panel"></div>
@@ -312,12 +370,14 @@ function renderDeal() {
   const r = S;
   const mine = r.mine || { isMember: false, role: null, isCreator: false };
   const ended = r.status !== 'active';
+  if (mine.isMember) joined = true;
   const full = r.members.length >= 2;
+  if (mine.isMember) joined = true;
 
   // Remember membership the server recognises (e.g. after signing in on another device)
   if (!memberId && mine.memberId) {
     memberId = mine.memberId;
-    localStorage.setItem('mem_' + roomId, memberId);
+    store.set('mem_' + roomId, memberId);
   }
 
   const pill = $('#pill');
@@ -378,32 +438,17 @@ function msgHTML(m, myRole) {
     </div></div>`;
 }
 
+// The Buyer/Seller cards are intentionally always hidden. Only the Report button (header) remains.
 function renderPeople(r, mine, ended) {
-  const card = role => {
-    const mem = r.members.find(x => x.role === role);
-    const link = mem && mem.uid;
-    const you = mine.role === role;
-    const sub = !mem ? 'অপেক্ষায় · Waiting' : link ? 'Member · প্রোফাইল দেখুন' : 'Guest';
-    return `<div class="person ${link ? 'link' : ''} ${mem ? '' : 'empty'}" ${link ? `data-profile="${esc(mem.uid)}"` : ''}>
-      <img class="av lg ${role}" src="${HUMAN}" alt="">
-      <div class="grow">
-        <div class="pname">${esc(mem ? (mem.name || ROLE_EN[role]) : ROLE_EN[role])}${you ? '<span class="you">আপনি</span>' : ''}</div>
-        <div class="psub">${ROLE_BN[role]} · ${ROLE_EN[role]}</div>
-        <div class="psub">${sub}</div>
-      </div></div>`;
-  };
   const other = mine.isMember && r.members.find(x => x.role && x.role !== mine.role);
-  const canReport = other && other.uid && !ended;
-  const html = card('buyer') + card('seller') +
-    (canReport ? `<button class="btn ghost sm" id="reportBtn" style="grid-column:1/-1">⚠ রিপোর্ট · Report</button>` : '');
-  if (html !== lastPeople) { $('#people').innerHTML = html; lastPeople = html; }
+  $('#reportBtn').hidden = !(other && other.uid && !ended);
 }
 
 function renderBanner(r, mine, ended) {
   let h = '';
   const full = r.members.length >= 2;
   if (ended) h = '';
-  else if (!mine.isMember) {
+  else if (!mine.isMember && !joined && !memberId) {
     h = !full
       ? `<div class="banner"><div><b>আপনাকে একটি ডিলে আমন্ত্রণ করা হয়েছে</b><div class="muted">You're invited · নাম দিয়ে যুক্ত হন।</div></div>
          <button class="btn" id="joinBtn">Join করুন</button></div>`
@@ -415,6 +460,7 @@ function renderBanner(r, mine, ended) {
          <div class="row"><button class="btn ghost sm" data-copy="1">🔗 Copy link</button><button class="btn teal sm" data-share="1">📤 Share</button></div></div>`;
   }
   if (h !== lastBanner) { $('#banner').innerHTML = h; lastBanner = h; }
+  $('#banner').hidden = !h;
 }
 
 function actionHTML(r, mine, ended) {
@@ -450,8 +496,11 @@ function actionHTML(r, mine, ended) {
 }
 
 async function poll() {
+  const seq = ++pollSeq, mh = memberId;
   try {
-    S = await api('room/' + roomId);
+    const d = await api('room/' + roomId, { member: mh });
+    if (seq !== pollSeq || mh !== memberId) return;   // stale reply (e.g. sent before joining) — ignore
+    S = d;
     pollErr = '';
     renderDeal();
   } catch (e) {
@@ -489,10 +538,13 @@ function submitJoin() {
 
 async function join(name, role) {
   const d = await api(`room/${roomId}/join`, { method: 'POST', body: { name, role } });
+  pollSeq++;                       // drop any poll that was already in flight
   memberId = d.memberId;
-  localStorage.setItem('mem_' + roomId, memberId);
+  joined = true;
+  store.set('mem_' + roomId, memberId);
   S = d.room;
-  lastBanner = ''; lastPeople = '';
+  lastBanner = '';
+  $('#banner').innerHTML = ''; $('#banner').hidden = true;   // Join box disappears immediately
   renderDeal();
   toast('ডিলে যুক্ত হয়েছেন · Joined');
 }
@@ -502,6 +554,7 @@ async function act(a, v) {
     v = $('#amt') ? $('#amt').value : '';
     if (!v) return toast('পরিমাণ লিখুন · Enter an amount');
   }
+  pollSeq++;
   S = await api(`room/${roomId}/action`, { method: 'POST', body: { memberId, action: a, value: v } });
   renderDeal();
 }
@@ -513,6 +566,7 @@ async function sendMsg() {
   i.value = '';
   justSent = true;
   try {
+    pollSeq++;
     S = await api(`room/${roomId}/msg`, { method: 'POST', body: { memberId, text } });
     renderDeal();
   } catch (e) {
@@ -661,18 +715,18 @@ function fbLogin() {
 async function doLogin(path, body) {
   const d = await api(path, { method: 'POST', body });
   session = d.token;
-  localStorage.setItem('ad_session', session);
+  store.set('ad_session', session);
   ME = d.user;
   closeSheet();
   renderAuth();
-  if (roomId) { lastBanner = ''; lastPeople = ''; poll(); }
+  if (roomId) { lastBanner = ''; poll(); }
   else home();
   toast('সাইন ইন হয়েছে · Signed in');
 }
 
 function logout() {
   session = '';
-  localStorage.removeItem('ad_session');
+  store.del('ad_session');
   ME = null;
   closeSheet();
   renderAuth();
@@ -700,6 +754,7 @@ document.addEventListener('click', async e => {
   const t = e.target.closest('button, [data-profile]');
   if (!t) return;
   try {
+    if (t.id === 'themeBtn') return applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
     if (t.id === 'newDeal') return await newDeal();
     if (t.id === 'loginBtn' || t.id === 'loginCta') return openLogin();
     if (t.id === 'myProfile') return await openMe();
@@ -733,7 +788,7 @@ document.addEventListener('keydown', e => {
   }
   if (e.key === 'Enter' && e.target.id === 'jName') {
     e.preventDefault();
-    submitJoin();
+    Promise.resolve(submitJoin()).catch(err => toast(err.message));
   }
 });
 
@@ -742,7 +797,7 @@ async function init() {
   try { SET = await api('settings'); } catch {}
   if (session) {
     try { ME = (await api('me')).user; }
-    catch { session = ''; localStorage.removeItem('ad_session'); }
+    catch { session = ''; store.del('ad_session'); }
   }
   renderAuth();
   if (roomId) {
