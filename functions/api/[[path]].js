@@ -96,15 +96,15 @@ export async function onRequest({ request, env, params }) {
         deals
       };
     };
-    const publicRoom = (r, memberId) => {
-      const me = memberId ? r.members.find(x => x.id === memberId) : null;
+    const publicRoom = (r, memberId, uid) => {
+      const me = r.members.find(x => (memberId && x.id === memberId) || (uid && x.uid === uid)) || null;
       return {
         id: r.id, step: r.step, status: r.status || 'active',
         amount: r.amount, fee: r.fee, total: r.total,
         method: r.method ? { name: r.method.name, number: r.method.number } : null,
         messages: r.messages,
         members: r.members.map(x => ({ role: x.role, uid: x.uid || null })),
-        mine: { isMember: !!me, role: me ? me.role : null },
+        mine: { isMember: !!me, role: me ? me.role : null, memberId: me ? me.id : null },
         t: r.t
       };
     };
@@ -169,14 +169,18 @@ export async function onRequest({ request, env, params }) {
       const [, id, sub] = rm;
       const r = await getRoom(id);
       if (!r) return J({ error: 'Deal not found' }, 404);
-      if (!sub && m === 'GET') return J(publicRoom(r, memberHdr));
+      if (!sub && m === 'GET') { const gu = await getUser(); return J(publicRoom(r, memberHdr, gu && gu.uid)); }
 
       const s = await getS();
 
       if (sub === 'join' && m === 'POST') {
-        if (r.members.length >= 2) return err('This deal already has 2 members');
         const u = await getUser();
-        if (u && r.members.some(x => x.uid === u.uid)) return err('You are already in this deal');
+        const existing = u ? r.members.find(x => x.uid === u.uid) : null;
+        if (existing) {
+          await addUserRoom(u.uid, r.id);
+          return J({ memberId: existing.id, room: publicRoom(r, existing.id, u.uid) });
+        }
+        if (r.members.length >= 2) return err('This deal already has 2 members');
         const member = { id: crypto.randomUUID().slice(0, 8), role: null, uid: u ? u.uid : null };
         r.members.push(member);
         push(r, 'sys', 'A member joined');
@@ -201,7 +205,7 @@ export async function onRequest({ request, env, params }) {
           if (v !== 'buyer' && v !== 'seller') return err('Invalid role');
           if (r.members.some(x => x.role === v)) return err('That role is already taken');
           mem.role = v;
-          push(r, 'sys', (v === 'buyer' ? 'Buyer' : 'Seller') + ' role set');
+          push(r, v, v === 'buyer' ? 'আমি ক্রেতা' : 'আমি বিক্রেতা');
           if (r.members.every(x => x.role)) {
             r.step = 'amount';
             botMsg(r, s, 'amount');
@@ -212,6 +216,7 @@ export async function onRequest({ request, env, params }) {
           const amt = Number(v);
           if (!(amt > 0)) return err('Enter a valid amount');
           r.amount = amt;
+          push(r, 'seller', '৳' + amt);
           r.fee = Math.round(amt * s.feePercent) / 100;
           r.total = Math.round((amt + r.fee) * 100) / 100;
           r.step = 'pay';
@@ -223,17 +228,20 @@ export async function onRequest({ request, env, params }) {
           const meth = s.methods[Number(v)];
           if (!meth) return err('Invalid payment method');
           r.method = meth;
+          push(r, 'buyer', meth.name);
           botMsg(r, s, 'payDetail', { total: r.total, method: meth.name, number: meth.number });
         }
         else if (act === 'sent') {
           if (r.step !== 'pay' || mem.role !== 'buyer' || !r.method) return err('Not allowed now');
           r.step = 'verify';
+          push(r, 'buyer', 'টাকা পাঠিয়েছি');
           botMsg(r, s, 'sent');
           await notify(`💰 Deal #${r.id}: buyer says payment sent (৳${r.total}). Please verify.`);
         }
         else if (act === 'received') {
           if (r.step !== 'deliver' || mem.role !== 'buyer') return err('Not allowed now');
           r.step = 'release';
+          push(r, 'buyer', 'পণ্য/সেবা বুঝে পেয়েছি');
           botMsg(r, s, 'received');
           await notify(`🔔 Deal #${r.id}: buyer confirmed delivery. Release payment to seller.`);
         }
