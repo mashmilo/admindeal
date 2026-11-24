@@ -18,9 +18,12 @@
   --font:'Inter','Noto Sans Bengali',system-ui,-apple-system,sans-serif;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{margin:0;height:100%}
 body{font-family:var(--font);background:var(--bg);color:var(--text);font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased}
 a{color:inherit}
+button{font-family:inherit}
+
 /* App bar */
 .appbar{position:sticky;top:0;z-index:20;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .logo{display:flex;align-items:center;gap:8px;font-weight:800;font-size:18px;text-decoration:none;letter-spacing:-.2px}
@@ -28,21 +31,24 @@ a{color:inherit}
 .logo span{background:linear-gradient(90deg,var(--indigo),var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
 .avatar-btn{width:36px;height:36px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 2px var(--indigo);overflow:hidden;background:#e0e7ff;cursor:pointer;padding:0;display:grid;place-items:center;font-size:18px}
 .avatar-btn img{width:100%;height:100%;object-fit:cover}
+
 /* Buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;border:0;border-radius:12px;padding:12px 18px;font:600 15px var(--font);cursor:pointer;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--violet));box-shadow:0 4px 14px rgba(79,70,229,.25);transition:transform .08s,opacity .2s;text-decoration:none;white-space:nowrap}
+.btn:hover{filter:brightness(1.05)}
 .btn:active{transform:scale(.98)}
 .btn:disabled{opacity:.5;cursor:default;box-shadow:none}
 .btn.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer));box-shadow:0 4px 14px rgba(37,99,235,.25)}
 .btn.seller{background:linear-gradient(135deg,#34d399,var(--seller));box-shadow:0 4px 14px rgba(16,185,129,.25)}
-.btn.admin{background:linear-gradient(135deg,#a78bfa,var(--admin));box-shadow:0 4px 14px rgba(139,92,246,.25)}
 .btn.ghost{background:#eef2f7;color:var(--text);box-shadow:none}
 .btn.fb{background:#1877f2;box-shadow:none}
 .btn.sm{padding:8px 12px;font-size:13px;border-radius:10px}
 .btn.lg{padding:15px 22px;font-size:16px;border-radius:14px}
 .btn.block{width:100%}
-/* Cards */
-.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.05)}
+.btn.hero-btn{background:#fff;color:var(--indigo);box-shadow:0 8px 20px rgba(0,0,0,.15)}
+
+/* Layout helpers */
 .wrap{max-width:720px;margin:0 auto;padding:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.05)}
 h2{margin:0 0 6px;font-size:20px;letter-spacing:-.3px}
 h3{margin:0 0 4px;font-size:16px}
 p{margin:6px 0;color:var(--muted)}
@@ -52,16 +58,16 @@ p{margin:6px 0;color:var(--muted)}
 .row.wrap{flex-wrap:wrap}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .grow{flex:1;min-width:0}
-input,textarea{width:100%;padding:13px 14px;border:1px solid #cbd5e1;border-radius:12px;font:15px var(--font);background:#fff;outline:none}
+input,textarea{width:100%;padding:13px 14px;border:1px solid #cbd5e1;border-radius:12px;font:15px var(--font);background:#fff;outline:none;color:var(--text)}
 input:focus,textarea:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(79,70,229,.15)}
 textarea{min-height:90px;resize:vertical}
+
 /* Home */
 .hero{background:linear-gradient(135deg,#4f46e5 0%,#7c3aed 45%,#0ea5e9 100%);color:#fff;border-radius:24px;padding:28px 22px;margin-top:6px;position:relative;overflow:hidden;box-shadow:0 18px 40px rgba(79,70,229,.3)}
 .hero:after{content:"";position:absolute;right:-60px;top:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,.12)}
 .tag{display:inline-block;background:rgba(255,255,255,.18);padding:5px 12px;border-radius:99px;font-size:12px;font-weight:600;margin-bottom:12px}
 .hero h1{margin:0 0 10px;font-size:30px;line-height:1.15;letter-spacing:-.6px}
 .hero p{color:rgba(255,255,255,.88);margin:0 0 18px;max-width:460px}
-.hero .btn{background:#fff;color:var(--indigo);box-shadow:0 8px 20px rgba(0,0,0,.15)}
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
 .step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px}
 .step b{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:9px;color:#fff;background:linear-gradient(135deg,var(--indigo),var(--sky));font-size:13px;margin-bottom:8px}
@@ -70,25 +76,27 @@ textarea{min-height:90px;resize:vertical}
 .checks li{padding:8px 0 8px 28px;position:relative;color:var(--muted);border-top:1px solid var(--line)}
 .checks li:before{content:"✓";position:absolute;left:4px;top:8px;width:18px;height:18px;border-radius:50%;background:#d1fae5;color:#047857;font-size:12px;display:grid;place-items:center;font-weight:700}
 @media (max-width:560px){.steps{grid-template-columns:1fr}.hero h1{font-size:26px}}
+
 /* Deal room */
 .deal{max-width:720px;margin:0 auto;background:var(--card);height:calc(100vh - 56px);height:calc(100dvh - 56px);display:flex;flex-direction:column;position:relative;box-shadow:0 0 0 1px var(--line)}
 .deal-head{display:flex;align-items:center;gap:10px;padding:10px 12px;border-bottom:1px solid var(--line);background:#fff}
-.icon-btn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#eef2f7;text-decoration:none;color:var(--text);font-size:18px;flex:none}
+.icon-btn{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:#eef2f7;text-decoration:none;color:var(--text);font-size:18px;flex:none;border:0;cursor:pointer}
+.icon-btn:hover{background:#e2e8f0}
 .dtitle{font-weight:700;font-size:16px}
 .dsub{font-size:12.5px;color:var(--muted)}
 .pill{font-size:12px;font-weight:700;padding:5px 10px;border-radius:99px;background:#eef2ff;color:var(--indigo);white-space:nowrap}
 .pill.ok{background:#d1fae5;color:#047857}.pill.bad{background:#fee2e2;color:#b91c1c}
 .people{display:flex;gap:8px;padding:10px 12px;border-bottom:1px solid var(--line);align-items:center;overflow-x:auto}
-.person{display:flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border-radius:14px;background:#f8fafc;border:1px solid var(--line);cursor:pointer;flex:1;min-width:150px}
+.person{display:flex;align-items:center;gap:8px;padding:6px 10px 6px 6px;border-radius:14px;background:#f8fafc;border:1px solid var(--line);flex:1;min-width:140px}
 .person .pname{font-weight:700;font-size:13px}
 .person .psub{font-size:11.5px;color:var(--muted)}
+.person.link{cursor:pointer}
 .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:16px;color:#fff;flex:none}
 .av.lg{width:40px;height:40px;font-size:18px}
 .av.buyer{background:linear-gradient(135deg,#3b82f6,var(--buyer))}
 .av.seller{background:linear-gradient(135deg,#34d399,var(--seller))}
 .av.admin{background:linear-gradient(135deg,#a78bfa,var(--admin))}
 .av.bot{background:linear-gradient(135deg,#94a3b8,var(--bot))}
-.av.sys{display:none}
 .banner{margin:10px 12px 0;padding:12px 14px;border-radius:14px;background:#eef2ff;border:1px solid #c7d2fe;display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap}
 .banner.join{background:linear-gradient(135deg,#eef2ff,#e0f2fe)}
 .banner b{font-size:14.5px}
@@ -109,20 +117,25 @@ textarea{min-height:90px;resize:vertical}
 .msg.me .tm{text-align:right}
 .sysline{text-align:center;margin:12px 0}
 .sysline span{display:inline-block;font-size:12px;color:#475569;background:#dbe3ef;padding:4px 12px;border-radius:99px}
+.empty{text-align:center;color:var(--muted);font-size:13.5px;margin-top:36px}
 .actions{padding:12px;border-top:1px solid var(--line);background:#fff}
 .actions:empty{display:none}
-.actions input{flex:1}
 .note{font-size:14px;color:var(--muted);text-align:center;padding:4px 0}
 .composer{display:flex;gap:8px;padding:10px 12px;border-top:1px solid var(--line);background:#fff}
-.composer[hidden]{display:none}
 .composer input{border-radius:99px;padding:11px 16px}
+
 /* Sheet */
-.overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+.overlay{position:fixed;inset:0;background:rgba(15,23,42,.45);display:none;align-items:flex-end;justify-content:center;z-index:50}
 .overlay.open{display:flex}
 .sheet{background:#fff;width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:20px 18px calc(20px + env(safe-area-inset-bottom));max-height:88vh;overflow-y:auto;animation:up .22s ease-out}
 @keyframes up{from{transform:translateY(30px);opacity:.4}to{transform:none;opacity:1}}
 @media (min-width:640px){.overlay{align-items:center}.sheet{border-radius:22px;max-height:85vh}}
 .sheet .grab{width:44px;height:5px;border-radius:9px;background:#cbd5e1;margin:-8px auto 14px}
+.linkbox{display:flex;gap:8px;align-items:center;margin-top:10px}
+.linkbox input{flex:1;font-size:13px;padding:11px 12px;background:#f8fafc}
+.share-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0}
+.share-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:14px;background:#f8fafc;border:1px solid var(--line);text-decoration:none;color:var(--text);font:600 12.5px var(--font);cursor:pointer}
+.share-btn span{font-size:20px}
 .ph{display:flex;align-items:center;gap:14px;margin-bottom:14px}
 .pav{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--indigo),var(--sky));display:grid;place-items:center;color:#fff;font-size:26px;overflow:hidden;flex:none}
 .pav img{width:100%;height:100%;object-fit:cover}
@@ -136,8 +149,7 @@ textarea{min-height:90px;resize:vertical}
 .badge{display:inline-block;font-size:11.5px;font-weight:700;padding:3px 9px;border-radius:99px;background:#eef2ff;color:var(--indigo)}
 .badge.done{background:#d1fae5;color:#047857}.badge.cancelled{background:#fee2e2;color:#b91c1c}
 .toast{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:#0f172a;color:#fff;padding:11px 18px;border-radius:12px;font-size:14px;display:none;z-index:99;max-width:90vw;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-.hidden{display:none!important}
-@media (max-width:420px){.stats{grid-template-columns:repeat(2,1fr)}.person{min-width:0}}
+@media (max-width:420px){.stats{grid-template-columns:repeat(2,1fr)}.person{min-width:0}.share-grid{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
 <body>
@@ -171,12 +183,15 @@ const roomId = new URLSearchParams(location.search).get('room');
 let session = localStorage.getItem('ad_session') || '';
 let ME = null, SET = { methods: [], googleClientId: '', fbAppId: '' };
 let S = null, memberId = roomId ? (localStorage.getItem('mem_' + roomId) || '') : '';
-let lastMsgCount = -1, lastStep = null, lastPanel = '', lastBanner = '', lastPeople = '';
+let lastMsgCount = -1, lastStep = null, lastPanel = '', lastBanner = '', lastPeople = '', pollErr = '', justSent = false;
+
+const shareUrl = () => location.origin + '/?room=' + roomId;
 
 async function api(p, o = {}) {
   const h = { 'content-type': 'application/json' };
   if (session) h.authorization = 'Bearer ' + session;
-  if (o.member) h['x-member'] = o.member;
+  const mh = o.member !== undefined ? o.member : memberId;
+  if (mh) h['x-member'] = mh;
   if (o.admin) h['x-admin-key'] = o.admin;
   const r = await fetch('/api/' + p, {
     method: o.method || 'GET', headers: h,
@@ -203,18 +218,19 @@ function home() {
     <section class="hero">
       <span class="tag">🔒 Secure escrow for buyers & sellers</span>
       <h1>Trade with confidence</h1>
-      <p>Create a deal room, invite the other party, and let our escrow bot guide every step from payment to delivery.</p>
-      <button class="btn lg" id="newDeal">+ Start a new deal</button>
+      <p>Create a deal, share the private link with the other party, and let our escrow bot guide every step from payment to delivery.</p>
+      <button class="btn lg hero-btn" id="newDeal">+ Start a new deal</button>
     </section>
     <section class="steps">
-      <div class="step"><b>1</b><h3>Create a deal</h3><p>Get a private deal link in one tap.</p></div>
-      <div class="step"><b>2</b><h3>Invite & choose roles</h3><p>Buyer and seller join from the same link.</p></div>
+      <div class="step"><b>1</b><h3>Create & share</h3><p>Get a private deal link and copy or share it in one tap.</p></div>
+      <div class="step"><b>2</b><h3>Join & choose roles</h3><p>Buyer and seller join from the same link.</p></div>
       <div class="step"><b>3</b><h3>Pay & release</h3><p>Admin verifies payment before the seller is paid.</p></div>
     </section>
     <section class="card">
       <h3>Why Admin Deal?</h3>
       <ul class="checks">
         <li>Every payment is verified by admin before release</li>
+        <li>Chat with the other party right inside the deal</li>
         <li>Public reputation: success rate and scam reports</li>
         <li>Sign-in is optional, and gives you a profile and deal history</li>
       </ul>
@@ -238,6 +254,7 @@ function dealShell() {
         <div class="dsub" id="dsub">Loading…</div>
       </div>
       <span class="pill" id="pill"></span>
+      <button class="icon-btn" data-share="1" aria-label="Share deal link" title="Share deal link">🔗</button>
     </div>
     <div class="people" id="people"></div>
     <div id="banner"></div>
@@ -254,23 +271,39 @@ function renderDeal() {
   const r = S;
   const mine = r.mine || { isMember: false, role: null };
   const ended = r.status !== 'active';
+
+  // Remember membership the server recognises (e.g. after signing in on another device)
+  if (!memberId && mine.memberId) {
+    memberId = mine.memberId;
+    localStorage.setItem('mem_' + roomId, memberId);
+  }
+
   const pill = $('#pill');
   pill.textContent = ended ? STATUS[r.status] : STEP[r.step];
   pill.className = 'pill' + (r.status === 'done' ? ' ok' : r.status === 'cancelled' ? ' bad' : '');
-  $('#dsub').textContent = r.amount ? `Amount ৳${r.amount} · Total ৳${r.total}` : 'Waiting for amount';
+
+  if (ended) $('#dsub').textContent = STATUS[r.status];
+  else if (r.members.length < 2) $('#dsub').textContent = `Waiting for ${2 - r.members.length} more ${r.members.length ? 'member' : 'members'}`;
+  else $('#dsub').textContent = r.amount ? `Amount ৳${r.amount} · Total ৳${r.total}` : 'Waiting for amount';
 
   renderPeople(r, mine, ended);
-  renderBanner(r, mine);
+  renderBanner(r, mine, ended);
 
   const chat = $('#chat');
   if (r.messages.length !== lastMsgCount || r.step !== lastStep) {
-    const near = chat.scrollTop + chat.clientHeight >= chat.scrollHeight - 100;
-    chat.innerHTML = r.messages.map(m => msgHTML(m, mine.role)).join('') || '<div class="note">No messages yet.</div>';
-    if (lastMsgCount < 0 || near) chat.scrollTop = chat.scrollHeight;
+    const near = chat.scrollHeight - chat.scrollTop - chat.clientHeight < 120;
+    chat.innerHTML = r.messages.length
+      ? r.messages.map(m => msgHTML(m, mine.role)).join('')
+      : '<div class="empty">No messages yet. Say hello 👋</div>';
+    if (lastMsgCount < 0 || near || justSent) chat.scrollTop = chat.scrollHeight;
     lastMsgCount = r.messages.length;
     lastStep = r.step;
   }
-  $('#composer').hidden = !(mine.isMember && mine.role && MANUAL.includes(r.step) && !ended);
+  justSent = false;
+
+  // Chat is open to both parties as soon as both have joined and picked a role
+  const canChat = mine.isMember && !!mine.role && !ended && MANUAL.includes(r.step);
+  $('#composer').hidden = !canChat;
 
   const h = actionHTML(r, mine, ended);
   if (h !== lastPanel) { $('#panel').innerHTML = h; lastPanel = h; }
@@ -279,8 +312,8 @@ function renderDeal() {
 function msgHTML(m, myRole) {
   if (m.who === 'sys') return `<div class="sysline"><span>${esc(m.text)}</span></div>`;
   const mine = m.who === myRole;
-  return `<div class="msg ${m.who} ${mine ? 'me' : ''}">
-    <div class="av ${m.who}">${AV[m.who] || '•'}</div>
+  return `<div class="msg ${esc(m.who)} ${mine ? 'me' : ''}">
+    <div class="av ${esc(m.who)}">${AV[m.who] || '•'}</div>
     <div class="bub">
       <div class="lbl">${LBL[m.who] || ''}</div>
       <div class="txt">${esc(m.text)}</div>
@@ -293,7 +326,7 @@ function renderPeople(r, mine, ended) {
     const mem = r.members.find(x => x.role === role);
     const uid = mem && mem.uid;
     const sub = !mem ? 'Waiting' : uid ? 'Member · view profile' : 'Guest';
-    return `<div class="person" ${uid ? `data-profile="${esc(uid)}"` : ''}>
+    return `<div class="person ${uid ? 'link' : ''}" ${uid ? `data-profile="${esc(uid)}"` : ''}>
       <div class="av lg ${role}">${AV[role]}</div>
       <div class="grow"><div class="pname">${LBL[role]}</div><div class="psub">${sub}</div></div>
     </div>`;
@@ -305,13 +338,17 @@ function renderPeople(r, mine, ended) {
   if (html !== lastPeople) { $('#people').innerHTML = html; lastPeople = html; }
 }
 
-function renderBanner(r, mine) {
+function renderBanner(r, mine, ended) {
   let h = '';
-  if (!mine.isMember) {
+  if (ended) h = '';
+  else if (!mine.isMember) {
     h = r.members.length < 2
-      ? `<div class="banner join"><div><b>You're invited to this deal</b><div class="muted">Join to chat and take part.</div></div>
+      ? `<div class="banner join"><div><b>You're invited to this deal</b><div class="muted">Join to take part in the chat and the payment steps.</div></div>
          <button class="btn" id="joinBtn">Join deal</button></div>`
       : `<div class="banner"><div class="muted">This deal already has two members.</div></div>`;
+  } else if (r.members.length < 2) {
+    h = `<div class="banner"><div><b>Waiting for the other party</b><div class="muted">Send this link to the buyer or seller so they can join.</div></div>
+         <div class="row"><button class="btn ghost sm" data-copy="1">Copy link</button><button class="btn sm" data-share="1">Share</button></div></div>`;
   }
   if (h !== lastBanner) { $('#banner').innerHTML = h; lastBanner = h; }
 }
@@ -356,8 +393,13 @@ function actionHTML(r, mine, ended) {
 }
 
 async function poll() {
-  try { S = await api('room/' + roomId, { member: memberId }); renderDeal(); }
-  catch (e) { toast(e.message); }
+  try {
+    S = await api('room/' + roomId);
+    pollErr = '';
+    renderDeal();
+  } catch (e) {
+    if (pollErr !== e.message) { toast(e.message); pollErr = e.message; }
+  }
 }
 
 async function join() {
@@ -383,9 +425,49 @@ async function sendMsg() {
   const i = $('#txt');
   const text = i.value.trim();
   if (!text) return;
-  S = await api(`room/${roomId}/msg`, { method: 'POST', body: { memberId, text } });
   i.value = '';
-  renderDeal();
+  justSent = true;
+  try {
+    S = await api(`room/${roomId}/msg`, { method: 'POST', body: { memberId, text } });
+    renderDeal();
+  } catch (e) {
+    i.value = text;
+    justSent = false;
+    throw e;
+  }
+}
+
+/* ---------- Share / copy link ---------- */
+async function copyLink() {
+  const url = shareUrl();
+  try {
+    await navigator.clipboard.writeText(url);
+  } catch {
+    const t = document.createElement('textarea');
+    t.value = url;
+    t.style.position = 'fixed'; t.style.opacity = '0';
+    document.body.appendChild(t);
+    t.select();
+    try { document.execCommand('copy'); } catch {}
+    t.remove();
+  }
+  toast('Deal link copied');
+}
+
+function openShare() {
+  const url = shareUrl();
+  const text = `Join my secure deal #${roomId} on Admin Deal`;
+  const enc = encodeURIComponent;
+  sheet(`<h2>Share deal link</h2>
+    <p>Send this private link to the other party. Whoever opens it can join the deal.</p>
+    <div class="linkbox"><input id="shareLink" readonly value="${esc(url)}" onclick="this.select()"><button class="btn sm" data-copy="1">Copy</button></div>
+    <div class="share-grid">
+      <a class="share-btn" target="_blank" rel="noopener" href="https://wa.me/?text=${enc(text + ' ' + url)}"><span>💬</span>WhatsApp</a>
+      <a class="share-btn" target="_blank" rel="noopener" href="https://t.me/share/url?url=${enc(url)}&text=${enc(text)}"><span>✈️</span>Telegram</a>
+      <a class="share-btn" href="mailto:?subject=${enc(text)}&body=${enc(url)}"><span>✉️</span>Email</a>
+      ${navigator.share ? `<button class="share-btn" id="nativeShare"><span>📤</span>More…</button>` : ''}
+    </div>
+    <button class="btn ghost block" data-close="1">Close</button>`);
 }
 
 /* ---------- Sheets (profile, login, report) ---------- */
@@ -396,7 +478,7 @@ function dealsHTML(deals) {
   if (!deals || !deals.length) return `<div class="muted" style="padding:10px 0">No deals yet.</div>`;
   return deals.map(d => `<div class="drow">
       <div><b>Deal #${esc(d.id)}</b><div class="muted">You were ${d.role ? LBL[d.role] : 'a member'} · ${dateStr(d.t)}</div></div>
-      <div style="text-align:right"><b>৳${d.amount || 0}</b><div><span class="badge ${d.status}">${STATUS[d.status]}</span></div></div>
+      <div style="text-align:right"><b>৳${d.amount || 0}</b><div><span class="badge ${esc(d.status)}">${STATUS[d.status]}</span></div></div>
     </div>`).join('');
 }
 
@@ -485,7 +567,8 @@ async function doLogin(path, body) {
   ME = d.user;
   closeSheet();
   renderAuth();
-  if (!roomId) home();
+  if (roomId) { lastBanner = ''; lastPeople = ''; poll(); }
+  else home();
   toast('Signed in');
 }
 
@@ -516,7 +599,7 @@ async function sendReport() {
 
 /* ---------- Events ---------- */
 document.addEventListener('click', async e => {
-  const t = e.target.closest('button, [data-profile]');
+  const t = e.target.closest('button, a[data-profile], [data-profile]');
   if (!t) return;
   try {
     if (t.id === 'newDeal') return await newDeal();
@@ -528,6 +611,9 @@ document.addEventListener('click', async e => {
     if (t.id === 'reportBtn') return openReport();
     if (t.id === 'sendReport') return await sendReport();
     if (t.id === 'logout') return logout();
+    if (t.id === 'nativeShare') return navigator.share({ title: 'Admin Deal', text: `Deal #${roomId}`, url: shareUrl() }).catch(() => {});
+    if (t.dataset.copy !== undefined) return await copyLink();
+    if (t.dataset.share !== undefined) return openShare();
     if (t.dataset.close !== undefined) return closeSheet();
     if (t.dataset.profile) return await openProfile(t.dataset.profile);
     if (t.dataset.a) return await act(t.dataset.a, t.dataset.v);
@@ -536,7 +622,10 @@ document.addEventListener('click', async e => {
 
 $('#sheet').addEventListener('click', e => { if (e.target.id === 'sheet') closeSheet(); });
 document.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && e.target.id === 'txt') sendMsg().catch(err => toast(err.message));
+  if (e.key === 'Enter' && !e.shiftKey && e.target.id === 'txt') {
+    e.preventDefault();
+    sendMsg().catch(err => toast(err.message));
+  }
 });
 
 /* ---------- Start ---------- */
