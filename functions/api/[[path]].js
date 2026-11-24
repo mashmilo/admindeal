@@ -2,13 +2,16 @@ const DEF = {
   feePercent: 1.5,
   googleClientId: '',
   fbAppId: '',
+  supportWhatsapp: '',
+  supportTelegram: '',
   methods: [
     { name: 'bKash', number: '01XXXXXXXXX' },
     { name: 'Nagad', number: '01XXXXXXXXX' }
   ],
-  // Bot messages are in Bangla. Everything else in the app is English.
+  // Bot messages are in Bangla. Everything else in the app is mixed Bangla + English.
   texts: {
-    welcome: 'ডিল তৈরি হয়েছে। এই লিংক ক্রেতা ও বিক্রেতাকে পাঠান। দুজন যুক্ত হলে পরের ধাপ শুরু হবে।',
+    welcome: 'ডিল তৈরি হয়েছে। প্রথমে আপনার নাম ও ভূমিকা (ক্রেতা/বিক্রেতা) দিয়ে যুক্ত হন, তারপর এই লিংক অন্য পক্ষকে পাঠান।',
+    joined: 'দুজন যুক্ত হয়েছেন — ক্রেতা: {buyer}, বিক্রেতা: {seller}।',
     roles: 'দুজন যুক্ত হয়েছেন। ক্রেতা ও বিক্রেতা বেছে নিন।',
     amount: 'বিক্রেতা, ডিলের পরিমাণ (টাকায়) লিখুন।',
     pay: 'ডিলের পরিমাণ: ৳{amount}\nসার্ভিস ফি ({fee}%): ৳{feeAmt}\nক্রেতাকে মোট পরিশোধ করতে হবে: ৳{total}\n\nক্রেতা, পেমেন্ট মাধ্যম বেছে নিন।',
@@ -25,6 +28,22 @@ const DEF = {
 const MANUAL = ['verify', 'deliver', 'release', 'done'];
 const ENDED = ['done', 'cancelled'];
 const SESSION_TTL = 60 * 60 * 24 * 30;
+
+// Support links: a plain number becomes a WhatsApp link, a @username becomes a Telegram link.
+const normWa = v => {
+  v = String(v || '').trim().slice(0, 200);
+  if (!v) return '';
+  if (/^https?:\/\//i.test(v)) return v;
+  const d = v.replace(/\D/g, '');
+  return d ? 'https://wa.me/' + d : '';
+};
+const normTg = v => {
+  v = String(v || '').trim().slice(0, 200);
+  if (!v) return '';
+  if (/^https?:\/\//i.test(v)) return v;
+  const u = v.replace(/^@/, '').replace(/^t\.me\//i, '');
+  return u ? 'https://t.me/' + u : '';
+};
 
 const J = (d, s = 200) =>
   new Response(JSON.stringify(d), { status: s, headers: { 'content-type': 'application/json;charset=utf-8' } });
@@ -47,13 +66,15 @@ export async function onRequest({ request, env, params }) {
         feePercent: s.feePercent ?? DEF.feePercent,
         googleClientId: s.googleClientId ?? DEF.googleClientId,
         fbAppId: s.fbAppId ?? DEF.fbAppId,
+        supportWhatsapp: s.supportWhatsapp ?? DEF.supportWhatsapp,
+        supportTelegram: s.supportTelegram ?? DEF.supportTelegram,
         methods: s.methods || DEF.methods,
         texts: { ...DEF.texts, ...(s.texts || {}) }
       };
     };
     const getRoom = id => env.DB.get('room:' + id, 'json');
     const saveRoom = r => env.DB.put('room:' + r.id, JSON.stringify(r));
-    const push = (r, who, text) => r.messages.push({ who, text, t: Date.now() });
+    const push = (r, who, text, name = '') => r.messages.push({ who, text, name, t: Date.now() });
     const botMsg = (r, s, key, vars = {}) => push(r, 'bot', fill(s.texts[key], vars));
     const notify = async text => {
       const n = (await env.DB.get('notifs', 'json')) || [];
@@ -98,13 +119,21 @@ export async function onRequest({ request, env, params }) {
     };
     const publicRoom = (r, memberId, uid) => {
       const me = r.members.find(x => (memberId && x.id === memberId) || (uid && x.uid === uid)) || null;
+      const creatorId = r.members[0] ? r.members[0].id : null;
       return {
         id: r.id, step: r.step, status: r.status || 'active',
         amount: r.amount, fee: r.fee, total: r.total,
         method: r.method ? { name: r.method.name, number: r.method.number } : null,
         messages: r.messages,
-        members: r.members.map(x => ({ role: x.role, uid: x.uid || null })),
-        mine: { isMember: !!me, role: me ? me.role : null, memberId: me ? me.id : null },
+        members: r.members.map(x => ({ role: x.role, uid: x.uid || null, name: x.name || '' })),
+        mine: {
+          isMember: !!me,
+          role: me ? me.role : null,
+          name: me ? (me.name || '') : '',
+          memberId: me ? me.id : null,
+          // Only the person who created the deal (first joiner) sees copy/share, and only while waiting
+          isCreator: !!me && !!creatorId && me.id === creatorId
+        },
         t: r.t
       };
     };
@@ -181,12 +210,30 @@ export async function onRequest({ request, env, params }) {
           return J({ memberId: existing.id, room: publicRoom(r, existing.id, u.uid) });
         }
         if (r.members.length >= 2) return err('This deal already has 2 members');
-        const member = { id: crypto.randomUUID().slice(0, 8), role: null, uid: u ? u.uid : null };
+
+        const name = String(body.name || (u && u.name) || '').trim().slice(0, 40);
+        if (!name) return err('আপনার নাম লিখুন · Enter your name');
+
+        let role;
+        if (!r.members.length) {
+          // First joiner picks buyer or seller
+          if (body.role !== 'buyer' && body.role !== 'seller') return err('ক্রেতা বা বিক্রেতা বেছে নিন · Choose buyer or seller');
+          role = body.role;
+        } else {
+          // Second joiner gets the opposite role automatically
+          role = r.members[0].role === 'buyer' ? 'seller' : 'buyer';
+        }
+
+        const member = { id: crypto.randomUUID().slice(0, 8), role, uid: u ? u.uid : null, name };
         r.members.push(member);
-        push(r, 'sys', 'A member joined');
+        push(r, 'sys', `${name} ${role === 'buyer' ? 'ক্রেতা' : 'বিক্রেতা'} হিসেবে যুক্ত হয়েছেন`);
+
         if (r.members.length === 2) {
-          r.step = 'roles';
-          botMsg(r, s, 'roles');
+          r.step = 'amount';
+          const buyer = r.members.find(x => x.role === 'buyer');
+          const seller = r.members.find(x => x.role === 'seller');
+          botMsg(r, s, 'joined', { buyer: buyer ? buyer.name : '', seller: seller ? seller.name : '' });
+          botMsg(r, s, 'amount');
         }
         if (u) await addUserRoom(u.uid, r.id);
         await saveRoom(r);
@@ -199,13 +246,14 @@ export async function onRequest({ request, env, params }) {
         if (ENDED.includes(r.status)) return err('This deal has ended');
         const act = body.action, v = body.value;
 
+        // Legacy: old deals that still use the separate role step
         if (act === 'role') {
           if (r.step !== 'roles') return err('Role selection is not active');
           if (mem.role) return err('Your role is already set');
           if (v !== 'buyer' && v !== 'seller') return err('Invalid role');
           if (r.members.some(x => x.role === v)) return err('That role is already taken');
           mem.role = v;
-          push(r, v, v === 'buyer' ? 'আমি ক্রেতা' : 'আমি বিক্রেতা');
+          push(r, v, v === 'buyer' ? 'আমি ক্রেতা' : 'আমি বিক্রেতা', mem.name);
           if (r.members.every(x => x.role)) {
             r.step = 'amount';
             botMsg(r, s, 'amount');
@@ -216,7 +264,7 @@ export async function onRequest({ request, env, params }) {
           const amt = Number(v);
           if (!(amt > 0)) return err('Enter a valid amount');
           r.amount = amt;
-          push(r, 'seller', '৳' + amt);
+          push(r, 'seller', '৳' + amt, mem.name);
           r.fee = Math.round(amt * s.feePercent) / 100;
           r.total = Math.round((amt + r.fee) * 100) / 100;
           r.step = 'pay';
@@ -228,20 +276,20 @@ export async function onRequest({ request, env, params }) {
           const meth = s.methods[Number(v)];
           if (!meth) return err('Invalid payment method');
           r.method = meth;
-          push(r, 'buyer', meth.name);
+          push(r, 'buyer', meth.name, mem.name);
           botMsg(r, s, 'payDetail', { total: r.total, method: meth.name, number: meth.number });
         }
         else if (act === 'sent') {
           if (r.step !== 'pay' || mem.role !== 'buyer' || !r.method) return err('Not allowed now');
           r.step = 'verify';
-          push(r, 'buyer', 'টাকা পাঠিয়েছি');
+          push(r, 'buyer', 'টাকা পাঠিয়েছি', mem.name);
           botMsg(r, s, 'sent');
           await notify(`💰 Deal #${r.id}: buyer says payment sent (৳${r.total}). Please verify.`);
         }
         else if (act === 'received') {
           if (r.step !== 'deliver' || mem.role !== 'buyer') return err('Not allowed now');
           r.step = 'release';
-          push(r, 'buyer', 'পণ্য/সেবা বুঝে পেয়েছি');
+          push(r, 'buyer', 'পণ্য/সেবা বুঝে পেয়েছি', mem.name);
           botMsg(r, s, 'received');
           await notify(`🔔 Deal #${r.id}: buyer confirmed delivery. Release payment to seller.`);
         }
@@ -258,7 +306,7 @@ export async function onRequest({ request, env, params }) {
         if (!MANUAL.includes(r.step)) return err('Chat opens after the bot step is complete');
         const t = String(body.text || '').trim().slice(0, 1000);
         if (!t) return err('Write a message');
-        push(r, mem.role, t);
+        push(r, mem.role, t, mem.name);
         await saveRoom(r);
         return J(publicRoom(r, mem.id));
       }
@@ -295,6 +343,8 @@ export async function onRequest({ request, env, params }) {
         if ('feePercent' in body) cur.feePercent = Math.max(0, Number(body.feePercent) || 0);
         if ('googleClientId' in body) cur.googleClientId = String(body.googleClientId || '').trim().slice(0, 200);
         if ('fbAppId' in body) cur.fbAppId = String(body.fbAppId || '').trim().slice(0, 50);
+        if ('supportWhatsapp' in body) cur.supportWhatsapp = normWa(body.supportWhatsapp);
+        if ('supportTelegram' in body) cur.supportTelegram = normTg(body.supportTelegram);
         if (Array.isArray(body.methods)) {
           cur.methods = body.methods
             .map(x => ({ name: String(x.name || '').trim().slice(0, 30), number: String(x.number || '').trim().slice(0, 30) }))
@@ -348,7 +398,7 @@ export async function onRequest({ request, env, params }) {
         if (a === 'msg') {
           const t = String(body.text || '').trim().slice(0, 1000);
           if (!t) return err('Write a message');
-          push(r, 'admin', t);
+          push(r, 'admin', t, 'Admin');
         }
         else if (a === 'confirm' && r.step === 'verify') {
           r.step = 'deliver';
