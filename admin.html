@@ -234,6 +234,7 @@ async function roomView(id) {
     $('#view').innerHTML = `<div class="card">
       <div class="row" style="justify-content:space-between"><button class="btn ghost" data-back="1">← Back</button>
       <span class="chip ${STATUS_CHIP[r.status]}">${r.status}</span></div>
+      <div class="row" style="margin-top:8px"><button class="btn ghost" data-copylink="1">🔗 Copy deal link</button></div>
       <h2 style="margin-top:10px">Deal #${esc(r.id)} · ${STEP[r.step]}</h2>
       ${info}
       <div class="chat" id="chat">${body}</div>
@@ -251,6 +252,12 @@ document.addEventListener('click', async e => {
   try {
     if (b.dataset.open) { openRoom = b.dataset.open; tab = 'deals'; return roomView(openRoom); }
     if (b.dataset.back) { openRoom = null; return show(); }
+    if (b.dataset.copylink) {
+      const url = location.origin + '/?room=' + openRoom;
+      try { await navigator.clipboard.writeText(url); }
+      catch { const t = document.createElement('textarea'); t.value = url; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+      return toast('Deal link copied');
+    }
     if (b.dataset.t) {
       if (b.dataset.t === 'logout') { sessionStorage.removeItem('ak'); KEY = ''; return loginView(); }
       tab = b.dataset.t; openRoom = null; return show();
